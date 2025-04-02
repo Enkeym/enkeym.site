@@ -15,12 +15,33 @@
 
 .hImg {
   position: absolute;
-  bottom: 0;
+  bottom: 75;
   right: 0;
   left: 0;
   margin: auto;
-  height: 80%;
-  width: max-content;
+  width: 400px;
+  height: 400px;
+  z-index: 1;
+}
+
+.heroImage {
+  width: 100%;
+  height: 100%;
+  animation: float 3s ease-in-out infinite;
+  object-fit: contain;
+  object-position: top;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
 }
 
 .hImg img {
@@ -35,6 +56,10 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.hSection.left {
+  margin-left: 20px;
 }
 
 .hTitle {
@@ -71,7 +96,6 @@
 }
 
 .scroll {
-  margin-bottom: 50px;
   width: max-content;
 }
 
@@ -115,7 +139,7 @@
 .bubbleContainer {
   display: flex;
   justify-content: flex-end;
-  align-items: flex-end;
+  align-items: flex-start;
   gap: 12px;
   padding: 0 16px;
   max-width: 80%;
@@ -163,6 +187,9 @@
   line-height: 24px;
   font-weight: 300;
   color: #ddd;
+  margin-top: auto;
+  margin-bottom: 40px;
+  margin-right: -70px;
 }
 
 .certificate img {
@@ -171,7 +198,8 @@
 }
 
 .contactLink {
-  margin-bottom: 50px;
+  margin-bottom: 20px;
+  margin-right: 20px;
 }
 
 .contactButton {
@@ -195,6 +223,36 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.foamOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 218px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.foamImage {
+  width: 100%;
+  height: 110%;
+  object-fit: fill;
+  object-position: top;
+  animation: foamWave 3s ease-in-out infinite;
+}
+
+@keyframes foamWave {
+  0% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-5px) translateX(-5px);
+  }
+  100% {
+    transform: translateY(0) translateX(0);
+  }
 }
 
 @media (max-width: 1536px) {
