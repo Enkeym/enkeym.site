@@ -9,6 +9,18 @@ import styles from "./hero.module.css"
 import Shape from "./Shape"
 import Speech from "./Speech"
 
+type platform = {
+  name: string
+  href: string
+}
+
+const platforms: platform[] = [
+  {
+    name: "telegram",
+    href: "https://t.me/NikitaKorolev96"
+  }
+]
+
 const awardVariants = {
   initial: { x: -100, opacity: 0 },
   animate: {
@@ -36,7 +48,7 @@ const followVariants = {
   }
 }
 
-const Hero = () => {
+const Hero: React.FC = () => {
   return (
     <div className={styles.hero}>
       {/* Левая секция */}
@@ -65,17 +77,19 @@ const Hero = () => {
             адаптивность и скорость.
           </motion.p>
           <motion.div variants={awardVariants} className={styles.awardList}>
-            {["html", "css", "js", "ts", "react"].map((src, i) => (
-              <motion.div key={i} variants={awardVariants}>
-                <Image
-                  src={`/${src}.svg`}
-                  alt={`Награда ${i + 1}`}
-                  width={36}
-                  height={36}
-                  className={styles.awardListImage}
-                />
-              </motion.div>
-            ))}
+            {["html", "css", "js", "ts", "react", "next", "nestjs"].map(
+              (src, i) => (
+                <motion.div key={i} variants={awardVariants}>
+                  <Image
+                    src={`/${src}.svg`}
+                    alt={`Награда ${i + 1}`}
+                    width={36}
+                    height={36}
+                    className={styles.awardListImage}
+                  />
+                </motion.div>
+              )
+            )}
           </motion.div>
         </motion.div>
 
@@ -119,16 +133,16 @@ const Hero = () => {
           animate="animate"
           className={styles.follow}
         >
-          {["telegram", "outlook"].map((platform) => (
+          {platforms.map(({ name, href }) => (
             <Link
-              key={platform}
-              href="/"
+              key={name}
+              href={href}
               className={styles.followLink}
-              aria-label={platform}
+              aria-label={name}
             >
               <Image
-                src={`/${platform}.svg`}
-                alt={platform}
+                src={`/${name}.svg`}
+                alt={name}
                 width={20}
                 height={20}
                 className={styles.followImg}

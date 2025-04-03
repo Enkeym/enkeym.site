@@ -73,7 +73,7 @@
 }
 
 .awards {
-  width: 35%;
+  width: 40%;
 }
 
 .awards p {
@@ -111,6 +111,7 @@
   padding: 16px;
   background-color: #2f204e;
   border-bottom-right-radius: 10px;
+  z-index: 100;
 }
 
 .followImg {
@@ -246,13 +247,13 @@
 
 @keyframes foamWave {
   0% {
-    transform: translateY(0) translateX(0);
+    transform: scaleY(1);
   }
   50% {
-    transform: translateY(-5px) translateX(-5px);
+    transform: scaleY(1.1);
   }
   100% {
-    transform: translateY(0) translateX(0);
+    transform: scaleY(1);
   }
 }
 
