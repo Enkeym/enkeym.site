@@ -58,15 +58,17 @@ const Hero = () => {
           animate="animate"
           className={styles.awards}
         >
-          <motion.h2 variants={awardVariants}>Лучший дизайнер</motion.h2>
+          <motion.h2 variants={awardVariants}>Fullstack разработчик</motion.h2>
           <motion.p variants={awardVariants}>
-            Профессионально создаю UI-дизайн и 3D-интерфейсы.
+            Создаю современные сайты и Telegram-ботов на React, TypeScript и
+            Node.js. Лендинги, сервисы, админки, API и бэкенд — с упором на UX,
+            адаптивность и скорость.
           </motion.p>
           <motion.div variants={awardVariants} className={styles.awardList}>
-            {["award1.png", "award2.png", "award3.png"].map((src, i) => (
+            {["html", "css", "js", "ts", "react"].map((src, i) => (
               <motion.div key={i} variants={awardVariants}>
                 <Image
-                  src={`/${src}`}
+                  src={`/${src}.svg`}
                   alt={`Награда ${i + 1}`}
                   width={36}
                   height={36}
@@ -117,7 +119,7 @@ const Hero = () => {
           animate="animate"
           className={styles.follow}
         >
-          {["instagram", "facebook", "youtube"].map((platform) => (
+          {["telegram", "outlook"].map((platform) => (
             <Link
               key={platform}
               href="/"
@@ -125,7 +127,7 @@ const Hero = () => {
               aria-label={platform}
             >
               <Image
-                src={`/${platform}.png`}
+                src={`/${platform}.svg`}
                 alt={platform}
                 width={20}
                 height={20}
@@ -134,7 +136,7 @@ const Hero = () => {
             </Link>
           ))}
           <div className={styles.followTextContainer}>
-            <div className={styles.followText}>СЛЕДИ ЗА МНОЙ</div>
+            <div className={styles.followText}>НАПИШИ МНЕ</div>
           </div>
         </motion.div>
 
@@ -152,11 +154,11 @@ const Hero = () => {
             width={70}
             height={70}
           />
-          СЕРТИФИЦИРОВАННЫЙ
+          ПРОДУМАННЫЙ UX
           <br />
-          СПЕЦИАЛИСТ
+          ЧИСТЫЙ КОД
           <br />
-          ПО UI-ДИЗАЙНУ
+          ДОСТУПНОСТЬ А11Y
         </motion.div>
 
         <Link
