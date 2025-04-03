@@ -70,6 +70,7 @@ const Hero = () => {
                   alt={`Награда ${i + 1}`}
                   width={36}
                   height={36}
+                  className={styles.awardListImage}
                 />
               </motion.div>
             ))}
@@ -128,6 +129,7 @@ const Hero = () => {
                 alt={platform}
                 width={20}
                 height={20}
+                className={styles.followImg}
               />
             </Link>
           ))}
