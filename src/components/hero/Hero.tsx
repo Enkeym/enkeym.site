@@ -9,18 +9,6 @@ import styles from "./hero.module.css"
 import Shape from "./Shape"
 import Speech from "./Speech"
 
-type platform = {
-  name: string
-  href: string
-}
-
-const platforms: platform[] = [
-  {
-    name: "telegram",
-    href: "https://t.me/NikitaKorolev96"
-  }
-]
-
 const awardVariants = {
   initial: { x: -100, opacity: 0 },
   animate: {
@@ -47,6 +35,18 @@ const followVariants = {
     transition: { duration: 1, staggerChildren: 0.2 }
   }
 }
+
+type platform = {
+  name: string
+  href: string
+}
+
+const platforms: platform[] = [
+  {
+    name: "telegram",
+    href: "https://t.me/NikitaKorolev96"
+  }
+]
 
 const Hero: React.FC = () => {
   return (
