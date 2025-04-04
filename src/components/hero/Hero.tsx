@@ -163,7 +163,7 @@ const Hero: React.FC = () => {
           className={styles.certificate}
         >
           <Image
-            src="/certificate.png"
+            src="/certificate.svg"
             alt="Сертификат"
             width={70}
             height={70}
