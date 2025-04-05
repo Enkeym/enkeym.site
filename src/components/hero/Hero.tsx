@@ -48,7 +48,7 @@ const platforms: platform[] = [
   }
 ]
 
-const Hero: React.FC = () => {
+const Hero = () => {
   return (
     <div className={styles.hero}>
       {/* Левая секция */}
@@ -72,19 +72,19 @@ const Hero: React.FC = () => {
         >
           <motion.h2 variants={awardVariants}>Fullstack разработчик</motion.h2>
           <motion.p variants={awardVariants}>
-            Создаю современные сайты и Telegram-ботов на React, TypeScript и
-            Node.js. Лендинги, сервисы, админки, API и бэкенд — с упором на UX,
-            адаптивность и скорость.
+            Создаю современные адаптивные веб‑приложения и умных ботов с
+            акцентом на скорость, SEO‑оптимизацию и UX. Использую ИИ для
+            генерации текстов, улучшения дизайна и повышения производительности.
           </motion.p>
           <motion.div variants={awardVariants} className={styles.awardList}>
-            {["html", "css", "js", "ts", "react", "next", "nestjs"].map(
+            {["html", "css", "js", "ts", "react", "next", "gpt"].map(
               (src, i) => (
                 <motion.div key={i} variants={awardVariants}>
                   <Image
                     src={`/${src}.svg`}
                     alt={`Награда ${i + 1}`}
-                    width={36}
-                    height={36}
+                    width={38}
+                    height={38}
                     className={styles.awardListImage}
                   />
                 </motion.div>
@@ -241,10 +241,9 @@ const Hero: React.FC = () => {
           <Image
             src="/man.png"
             alt="Главный персонаж"
-            width={400}
-            height={400}
+            fill
             className={styles.heroImage}
-            style={{ objectFit: "cover" }}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
             priority
           />
         </div>

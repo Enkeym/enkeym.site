@@ -8,9 +8,6 @@ const Hero = dynamic(() => import("@/components/hero/Hero"), { ssr: false })
 const Services = dynamic(() => import("@/components/services/Services"), {
   ssr: false
 })
-const Portfolio = dynamic(() => import("@/components/portfolio/Portfolio"), {
-  ssr: false
-})
 const Contact = dynamic(() => import("@/components/contact/Contact"), {
   ssr: false
 })
@@ -18,7 +15,6 @@ const Contact = dynamic(() => import("@/components/contact/Contact"), {
 const sections = [
   { id: "home", component: Hero },
   { id: "services", component: Services },
-  { id: "portfolio", component: Portfolio },
   { id: "contact", component: Contact }
 ]
 

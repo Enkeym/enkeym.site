@@ -16,7 +16,7 @@
 
 .hImg {
   position: absolute;
-  bottom: 100px;
+  bottom: 90px;
   right: 0;
   left: 0;
   margin: auto;
@@ -29,7 +29,7 @@
   width: 100%;
   height: 100%;
   animation: float 3s ease-in-out infinite;
-  object-fit: contain;
+  object-fit: cover;
   object-position: top;
 }
 
@@ -65,7 +65,7 @@
 
 .hTitle {
   margin-top: 50px;
-  font-size: 90px;
+  font-size: 85px;
   color: pink;
 }
 
@@ -89,8 +89,8 @@
 }
 
 .awardListImage {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   padding: 8px;
   background-color: white;
   border-radius: 100%;
@@ -191,13 +191,7 @@
   font-weight: 300;
   color: #ddd;
   margin-top: auto;
-  margin-bottom: 40px;
-  margin-right: -70px;
-}
-
-.certificate img {
-  width: 70px;
-  height: 70px;
+  margin-bottom: 50px;
 }
 
 .contactLink {
@@ -233,7 +227,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 218px;
+  height: 200px;
   z-index: 3;
   overflow: hidden;
   pointer-events: none;

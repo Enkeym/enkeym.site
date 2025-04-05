@@ -8,7 +8,6 @@ import styles from "./navbar.module.css"
 const navItems = [
   { id: "home", label: "Главная" },
   { id: "services", label: "Обо мне" },
-  { id: "portfolio", label: "Портфолио" },
   { id: "contact", label: "Связаться" }
 ]
 

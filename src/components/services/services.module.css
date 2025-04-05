@@ -1,2 +1,119 @@
 .services {
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+}
+
+.sSection {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.sSection.left {
+  width: auto;
+  padding-left: 40px;
+}
+
+.sTitle {
+  font-size: clamp(32px, 6vw, 72px);
+  line-height: 1.1;
+  font-weight: 800;
+  margin-bottom: 32px;
+  max-width: 90%;
+  word-break: break-word;
+}
+
+.serviceList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.service {
+  width: 70%;
+  padding: 30px;
+  border-radius: 20px;
+  background-color: #2f213f;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  cursor: pointer;
+}
+
+.serviceIcon {
+  width: 48px;
+  height: 48px;
+  border-radius: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon1 {
+  background-color: #0a192f;
+}
+.icon2 {
+  background-color: #229ed9;
+}
+.icon3 {
+  background-color: #f59e0b;
+}
+
+.serviceInfo {
+  margin: auto;
+}
+
+.serviceInfo h2 {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 9px;
+}
+
+.serviceInfo h3 {
+  font-size: 14px;
+  font-weight: 300;
+}
+
+@media (max-width: 1536px) {
+  .service {
+    width: 70%;
+  }
+}
+
+@media (max-width: 1280px) {
+  .sTitle {
+    font-size: 128px;
+  }
+
+  .service {
+    width: 100%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .sTitle {
+    font-size: 48px;
+  }
+
+  .service {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .services {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .sSection {
+    width: 100%;
+  }
+
+  .sSection.right {
+    display: none;
+  }
 }
