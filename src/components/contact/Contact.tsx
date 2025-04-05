@@ -110,13 +110,6 @@ const Contact = () => {
             tabIndex={-1}
           />
 
-          <Turnstile
-            sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""}
-            onSuccess={(token) => setToken(token)}
-            onExpire={() => setToken(null)}
-            theme="light"
-          />
-
           <motion.h1 variants={listVariant} className={styles.cTitle}>
             Связаться со мной
           </motion.h1>
@@ -161,14 +154,24 @@ const Contact = () => {
             />
           </motion.div>
 
-          <motion.button
-            type="submit"
-            variants={listVariant}
-            className={styles.formButton}
-            disabled={loading}
-          >
-            {loading ? "Отправка..." : "Отправить"}
-          </motion.button>
+          <motion.div variants={listVariant} className={styles.submitRow}>
+            <div className={styles.turnstileWrapper}>
+              <Turnstile
+                sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""}
+                onSuccess={(token) => setToken(token)}
+                onExpire={() => setToken(null)}
+                theme="light"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className={styles.formButton}
+              disabled={loading}
+            >
+              {loading ? "Отправка..." : "Отправить"}
+            </button>
+          </motion.div>
 
           {success && <span>Ваше сообщение успешно отправлено!</span>}
           {error && <span>Произошла ошибка при отправке.</span>}

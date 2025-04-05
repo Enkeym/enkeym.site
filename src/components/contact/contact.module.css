@@ -61,6 +61,17 @@
   display: none;
 }
 
+.submitRow {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.turnstileWrapper {
+  flex-shrink: 0;
+}
+
 @media (max-width: 1280px) {
   .foam {
     width: 100%;
