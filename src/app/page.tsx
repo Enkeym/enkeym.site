@@ -1,7 +1,6 @@
 "use client"
 
 import Navbar from "@/components/navbar/Navbar"
-import { useSectionScroll } from "@/hooks/useSectionScroll"
 import dynamic from "next/dynamic"
 import { Suspense } from "react"
 
@@ -20,8 +19,6 @@ const sections = [
 ]
 
 export default function HomePage() {
-  useSectionScroll()
-
   return (
     <main>
       <Navbar />
