@@ -1,6 +1,5 @@
 "use client"
 
-import Navbar from "@/components/navbar/Navbar"
 import { useSmoothScroll } from "@/hooks/useSmoothScroll"
 import dynamic from "next/dynamic"
 import { Suspense } from "react"
@@ -28,7 +27,6 @@ export default function HomePage() {
 
   return (
     <main>
-      <Navbar />
       {sections.map(({ id, component: Component }) => (
         <section key={id} id={id}>
           <Suspense fallback={<div>Загрузка секции {id}...</div>}>
