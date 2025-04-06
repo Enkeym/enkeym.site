@@ -1,10 +1,10 @@
 "use client"
 
 import { Canvas } from "@react-three/fiber"
-import { motion } from "framer-motion"
+import { motion, useInView } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
-import { Suspense } from "react"
+import { Suspense, useRef } from "react"
 import styles from "./hero.module.css"
 import Shape from "./Shape"
 import Speech from "./Speech"
@@ -49,13 +49,16 @@ const platforms: platform[] = [
 ]
 
 const Hero = () => {
+  const ref = useRef<HTMLDivElement | null>(null)
+  const isInView = useInView(ref, { margin: "-200px", once: false })
+
   return (
-    <div className={styles.hero}>
+    <div className={styles.hero} ref={ref}>
       {/* Левая секция */}
       <div className={`${styles.hSection} ${styles.left}`}>
         <motion.h1
           initial={{ y: -100, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
+          animate={isInView ? { y: 0, opacity: 1 } : {}}
           transition={{ duration: 1 }}
           className={styles.hTitle}
         >
@@ -67,7 +70,7 @@ const Hero = () => {
         <motion.div
           variants={awardVariants}
           initial="initial"
-          animate="animate"
+          animate={isInView ? "animate" : "initial"}
           className={styles.awards}
         >
           <motion.h2 variants={awardVariants}>Fullstack разработчик</motion.h2>
@@ -130,7 +133,7 @@ const Hero = () => {
         <motion.div
           variants={followVariants}
           initial="initial"
-          animate="animate"
+          animate={isInView ? "animate" : "initial"}
           className={styles.follow}
         >
           {platforms.map(({ name, href }) => (
@@ -159,7 +162,7 @@ const Hero = () => {
         <motion.div
           variants={certificateVariants}
           initial="initial"
-          animate="animate"
+          animate={isInView ? "animate" : "initial"}
           className={styles.certificate}
         >
           <Image
@@ -172,7 +175,7 @@ const Hero = () => {
           <br />
           ЧИСТЫЙ КОД
           <br />
-          ДОСТУПНОСТЬ А11Y
+          ДОСТУПНОСТЬ A11Y
         </motion.div>
 
         <Link
