@@ -7,34 +7,13 @@ type ScrollOptions = {
   enabled?: boolean
 }
 
-function easeInOutQuad(t: number) {
+function easeInOutQuad(t: number): number {
   return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
-}
-
-function smoothScrollTo(targetY: number, duration: number = 800) {
-  const startY = window.scrollY || window.pageYOffset
-  const distance = targetY - startY
-  let startTime: number | null = null
-
-  const step = (currentTime: number) => {
-    if (!startTime) startTime = currentTime
-    const timeElapsed = currentTime - startTime
-    const progress = Math.min(timeElapsed / duration, 1)
-    const ease = easeInOutQuad(progress)
-
-    window.scrollTo(0, startY + distance * ease)
-
-    if (progress < 1) {
-      requestAnimationFrame(step)
-    }
-  }
-
-  requestAnimationFrame(step)
 }
 
 export function useSmoothScroll({
   selector = "section",
-  delay = 1000,
+  delay = 1100,
   duration = 800,
   enabled = true
 }: ScrollOptions = {}) {
@@ -42,16 +21,57 @@ export function useSmoothScroll({
   const currentSectionIndex = useRef<number>(0)
   const isScrolling = useRef<boolean>(false)
   const touchStartY = useRef<number>(0)
+  const animationFrameId = useRef<number | null>(null)
 
-  // Инициализация секций
   useEffect(() => {
     if (!enabled) return
     sectionsRef.current = Array.from(document.querySelectorAll(selector))
   }, [selector, enabled])
 
+  const cancelScrollAnimation = useCallback(() => {
+    if (animationFrameId.current !== null) {
+      cancelAnimationFrame(animationFrameId.current)
+      animationFrameId.current = null
+    }
+  }, [])
+
+  const smoothScrollTo = useCallback(
+    (targetY: number, duration: number) => {
+      const startY = window.scrollY || window.pageYOffset
+      const distance = targetY - startY
+      let startTime: number | null = null
+
+      cancelScrollAnimation()
+
+      const step = (currentTime: number) => {
+        if (!startTime) startTime = currentTime
+        const timeElapsed = currentTime - startTime
+        const progress = Math.min(timeElapsed / duration, 1)
+        const ease = easeInOutQuad(progress)
+
+        window.scrollTo(0, startY + distance * ease)
+
+        if (progress < 1) {
+          animationFrameId.current = requestAnimationFrame(step)
+        } else {
+          animationFrameId.current = null
+        }
+      }
+
+      animationFrameId.current = requestAnimationFrame(step)
+    },
+    [cancelScrollAnimation]
+  )
+
   const scrollTo = useCallback(
     (index: number) => {
-      if (index < 0 || index >= sectionsRef.current.length) return
+      if (
+        !enabled ||
+        isScrolling.current ||
+        index < 0 ||
+        index >= sectionsRef.current.length
+      )
+        return
 
       const target = sectionsRef.current[index]
       const targetY = target.getBoundingClientRect().top + window.scrollY
@@ -61,11 +81,13 @@ export function useSmoothScroll({
 
       smoothScrollTo(targetY, duration)
 
-      setTimeout(() => {
+      const release = setTimeout(() => {
         isScrolling.current = false
       }, delay)
+
+      return () => clearTimeout(release)
     },
-    [delay, duration]
+    [enabled, smoothScrollTo, delay, duration]
   )
 
   const onWheel = useCallback(
@@ -107,8 +129,9 @@ export function useSmoothScroll({
       window.removeEventListener("wheel", onWheel)
       window.removeEventListener("touchstart", onTouchStart)
       window.removeEventListener("touchend", onTouchEnd)
+      cancelScrollAnimation()
     }
-  }, [enabled, onWheel, onTouchStart, onTouchEnd])
+  }, [enabled, onWheel, onTouchStart, onTouchEnd, cancelScrollAnimation])
 
   return {
     scrollToSection: (index: number) => scrollTo(index),
