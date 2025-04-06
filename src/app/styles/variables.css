@@ -32,12 +32,4 @@
   --container-max: 1536px;
   --container-padding: clamp(16px, 4vw, 32px);
   --section-gap: clamp(64px, 10vw, 120px);
-
-  /* Брейкпоинты (для JS или @media) */
-  --breakpoint-xs: 480px;
-  --breakpoint-sm: 640px;
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 1024px;
-  --breakpoint-xl: 1280px;
-  --breakpoint-2xl: 1536px;
 }

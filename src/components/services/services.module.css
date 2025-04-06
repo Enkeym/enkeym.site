@@ -84,17 +84,25 @@
 
 @media (max-width: 1280px) {
   .sTitle {
-    font-size: 128px;
+    font-size: clamp(--font-subtitle);
   }
 
   .service {
     width: 100%;
   }
+
+  .serviceList {
+    width: 80%;
+  }
 }
 
 @media (max-width: 1024px) {
   .sTitle {
-    font-size: 48px;
+    font-size: var(--font-subtitle);
+  }
+
+  .serviceList {
+    width: 90%;
   }
 
   .service {
@@ -109,11 +117,27 @@
     flex-direction: column;
   }
 
+  .sTitle {
+    font-size: calc(var(--font-subtitle) * 2);
+  }
+
   .sSection {
     width: 100%;
   }
 
   .sSection.right {
     display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .sTitle {
+    font-size: calc(var(--font-heading) * 1.8);
+  }
+}
+
+@media (max-width: 360px) {
+  .sTitle {
+    font-size: var(--font-small);
   }
 }
