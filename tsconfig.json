@@ -13,7 +13,6 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "importHelpers": true,
     "typeRoots": ["./types", "./node_modules/@types"],
 
     "plugins": [

@@ -1,0 +1,25 @@
+/* global reset & root */
+
+:root {
+  /* Цвета */
+  --color-bg: linear-gradient(to bottom, #12071f, #2f204e);
+  --color-text: white;
+  --color-accent: #dd4c62;
+
+  /* Типографика */
+  --font-body: clamp(14px, 1.2vw, 18px);
+  --font-title: clamp(32px, 6vw, 88px);
+  --font-small: clamp(12px, 1vw, 16px);
+  --font-circle: clamp(14px, 2vw, 20px);
+
+  /* Отступы */
+  --spacing-xs: clamp(4px, 0.5vw, 8px);
+  --spacing-s: clamp(8px, 1vw, 16px);
+  --spacing-m: clamp(16px, 2vw, 32px);
+  --spacing-l: clamp(24px, 4vw, 64px);
+  --spacing-xl: clamp(32px, 6vw, 96px);
+
+  /* Контейнер */
+  --container-max: 1536px;
+  --container-padding: clamp(16px, 4vw, 32px);
+}

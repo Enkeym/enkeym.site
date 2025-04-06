@@ -6,7 +6,10 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "css": "purgecss --css src/styles/globals.css --content src/**/*.{js,ts,jsx,tsx} --output ./purged",
+    "analyze": "knip",
+    "test": "yarn css && yarn analyze || true && yarn lint"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -15,7 +18,6 @@
     "framer-motion": "^12.6.3",
     "next": "15.2.4",
     "next-secure-headers": "^2.2.0",
-    "next-seo": "^6.6.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-turnstile": "^1.1.4",
@@ -30,6 +32,10 @@
     "@types/three": "^0.175.0",
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
+    "knip": "^5.47.0",
+    "purgecss": "^7.0.2",
+    "stylelint": "^16.18.0",
+    "stylelint-no-unused-selectors": "^1.0.40",
     "typescript": "^5"
   }
 }

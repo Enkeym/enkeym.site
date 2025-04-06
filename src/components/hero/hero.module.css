@@ -16,12 +16,12 @@
 
 .hImg {
   position: absolute;
-  bottom: 90px;
+  bottom: var(--spacing-xl);
   right: 0;
   left: 0;
   margin: auto;
-  width: 400px;
-  height: 400px;
+  width: clamp(200px, 40vw, 400px);
+  height: clamp(200px, 40vw, 400px);
   z-index: 1;
 }
 
@@ -60,17 +60,17 @@
 }
 
 .hSection.left {
-  margin-left: 40px;
+  margin-left: var(--spacing-l);
 }
 
 .hTitle {
-  margin-top: 50px;
-  font-size: 85px;
-  color: pink;
+  margin-top: var(--spacing-xl);
+  font-size: var(--font-title);
+  color: var(--color-accent);
 }
 
 .hTitle span {
-  color: white;
+  color: var(--color-text);
 }
 
 .awards {
@@ -78,26 +78,26 @@
 }
 
 .awards p {
-  font-size: 14px;
+  font-size: var(--font-small);
   color: #ddd;
-  margin: 16px 0px;
+  margin: var(--spacing-s) 0;
 }
 
 .awardList {
   display: flex;
-  gap: 8px;
+  gap: var(--spacing-xs);
 }
 
 .awardListImage {
   width: 38px;
   height: 38px;
-  padding: 8px;
+  padding: var(--spacing-xs);
   background-color: white;
   border-radius: 100%;
 }
 
 .scroll {
-  margin-bottom: 40px;
+  margin-bottom: var(--spacing-l);
   max-width: max-content;
 }
 
@@ -108,8 +108,8 @@
 .follow {
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 16px;
+  gap: var(--spacing-xs);
+  padding: var(--spacing-s);
   background-color: #2f204e;
   border-bottom-right-radius: 10px;
   z-index: 100;
@@ -126,14 +126,14 @@
 }
 
 .followText {
-  background-color: #dd4c62;
-  font-size: 12px;
+  background-color: var(--color-accent);
+  font-size: var(--font-small);
   rotate: 90deg;
   width: max-content;
   height: 100%;
   transform-origin: left top;
   transform: translateY(-20px);
-  padding: 0 8px;
+  padding: 0 var(--spacing-xs);
   display: flex;
   align-items: center;
   border-bottom-right-radius: 10px;
@@ -143,18 +143,18 @@
   display: flex;
   justify-content: flex-end;
   align-items: flex-start;
-  gap: 12px;
-  padding: 0 16px;
+  gap: var(--spacing-s);
+  padding: 0 var(--spacing-s);
   max-width: 80%;
-  margin: 0 auto 20px auto;
+  margin: 0 auto var(--spacing-m) auto;
   animation: fadeIn 0.5s ease-in-out;
 }
 
 .bubble {
   background-color: white;
   color: #2f204e;
-  padding: 16px 20px;
-  font-size: 16px;
+  padding: var(--spacing-s) var(--spacing-m);
+  font-size: var(--font-body);
   line-height: 1.4;
   border-radius: 20px 20px 0 20px;
   max-width: 100%;
@@ -166,7 +166,7 @@
   width: 48px;
   height: 48px;
   object-fit: cover;
-  background-color: #dd4c62;
+  background-color: var(--color-accent);
 }
 
 @keyframes fadeIn {
@@ -185,18 +185,18 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: var(--spacing-xs);
   text-align: center;
-  line-height: 24px;
+  line-height: 1.5;
   font-weight: 300;
   color: #ddd;
   margin-top: auto;
-  margin-bottom: 50px;
+  margin-bottom: var(--spacing-xl);
 }
 
 .contactLink {
-  margin-bottom: 20px;
-  margin-right: 20px;
+  margin-bottom: var(--spacing-m);
+  margin-right: var(--spacing-m);
 }
 
 .contactButton {
@@ -205,7 +205,7 @@
 
 .circleText {
   letter-spacing: 3px;
-  font-size: 20px;
+  font-size: var(--font-circle);
 }
 
 .arrow {
@@ -227,7 +227,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 200px;
+  height: calc(var(--spacing-xl) * 2);
   z-index: 3;
   overflow: hidden;
   pointer-events: none;
@@ -255,7 +255,7 @@
 
 @media (max-width: 1536px) {
   .hTitle {
-    font-size: 72px;
+    font-size: clamp(32px, 6vw, 72px);
   }
 }
 
@@ -270,10 +270,6 @@
     height: 100%;
   }
 
-  .hTitle {
-    font-size: 88px;
-  }
-
   .awards {
     width: 60%;
   }
@@ -286,10 +282,6 @@
 @media (max-width: 1024px) {
   .bg {
     height: 50%;
-  }
-
-  .hTitle {
-    font-size: 72px;
   }
 }
 
@@ -309,11 +301,11 @@
   .hSection.left {
     align-items: center;
     text-align: center;
-    gap: 36px;
+    gap: var(--spacing-l);
   }
 
   .hTitle {
-    font-size: 48px;
+    font-size: clamp(32px, 6vw, 48px);
   }
 
   .awards {

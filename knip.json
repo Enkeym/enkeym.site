@@ -1,0 +1,12 @@
+{
+  "$schema": "https://unpkg.com/knip/knip.schema.json",
+  "entry": ["src/app/page.tsx"],
+  "project": ["src/**/*.{ts,tsx}"],
+  "ignore": ["src/app/head.tsx", "src/lib/seo.ts", "src/lib/jsonld.ts"],
+  "ignoreDependencies": [
+    "eslint",
+    "eslint-config-next",
+    "stylelint",
+    "stylelint-no-unused-selectors"
+  ]
+}

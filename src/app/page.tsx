@@ -1,6 +1,7 @@
 "use client"
 
 import Navbar from "@/components/navbar/Navbar"
+import { useSmoothScroll } from "@/hooks/useSmoothScroll"
 import dynamic from "next/dynamic"
 import { Suspense } from "react"
 
@@ -19,6 +20,11 @@ const sections = [
 ]
 
 export default function HomePage() {
+  useSmoothScroll({
+    selector: "main > section",
+    delay: 700
+  })
+
   return (
     <main>
       <Navbar />
