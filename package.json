@@ -7,9 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "css": "purgecss --css src/styles/globals.css --content src/**/*.{js,ts,jsx,tsx} --output ./purged",
     "analyze": "knip",
-    "test": "yarn css && yarn analyze || true && yarn lint"
+    "test": "yarn analyze && yarn lint"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -26,14 +25,16 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@fullhuman/postcss-purgecss": "^7.0.2",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/three": "^0.175.0",
+    "autoprefixer": "^10.4.21",
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
     "knip": "^5.47.0",
-    "purgecss": "^7.0.2",
+    "postcss": "^8.5.3",
     "stylelint": "^16.18.0",
     "stylelint-no-unused-selectors": "^1.0.40",
     "typescript": "^5"

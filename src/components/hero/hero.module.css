@@ -30,9 +30,9 @@
 .heroImage {
   width: 100%;
   height: 100%;
-  animation: float 3s ease-in-out infinite;
   object-fit: cover;
   object-position: top;
+  animation: float 3s ease-in-out infinite;
 }
 
 @keyframes float {
@@ -62,13 +62,14 @@
 }
 
 .hSection.left {
-  margin-left: var(--spacing-l);
+  margin-left: var(--spacing-xl);
 }
 
 .hTitle {
-  margin-top: var(--spacing-xl);
   font-size: var(--font-title);
   color: var(--color-accent);
+  font-weight: 800;
+  line-height: 1.15;
 }
 
 .hTitle span {
@@ -76,26 +77,29 @@
 }
 
 .awards {
-  width: 40%;
+  max-width: 600px;
+  width: 100%;
 }
 
 .awards p {
-  font-size: var(--font-small);
+  font-size: var(--font-body);
+  line-height: 1.6;
   color: #ddd;
-  margin: var(--spacing-s) 0;
+  max-width: 520px;
 }
 
 .awardList {
   display: flex;
-  gap: var(--spacing-xs);
+  gap: var(--spacing-s);
+  margin-top: var(--spacing-s);
 }
 
 .awardListImage {
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 42px;
   padding: var(--spacing-xs);
-  background-color: white;
-  border-radius: 100%;
+  background: white;
+  border-radius: 50%;
 }
 
 .scroll {
@@ -104,7 +108,12 @@
 }
 
 .hSection.right {
-  align-items: end;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+  height: 100%;
+  position: relative;
 }
 
 .follow {
@@ -147,8 +156,7 @@
   align-items: flex-start;
   gap: var(--spacing-s);
   padding: 0 var(--spacing-s);
-  max-width: 80%;
-  margin: 0 auto var(--spacing-m) auto;
+  max-width: 100%;
   animation: fadeIn 0.5s ease-in-out;
 }
 
@@ -183,10 +191,6 @@
 }
 
 .certificate {
-  width: 60%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: var(--spacing-xs);
   text-align: center;
   line-height: 1.5;
@@ -229,7 +233,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: calc(var(--spacing-xl) * 4);
+  height: calc(var(--spacing-xl) * 3);
   z-index: 3;
   overflow: hidden;
   pointer-events: none;
@@ -619,6 +623,53 @@
   .hTitle {
     font-size: clamp(32px, 6vw, 72px);
   }
+
+  .bg {
+    height: 60%;
+    top: auto;
+    bottom: 0;
+  }
+
+  .foamOverlay {
+    height: clamp(160px, 22vh, 260px);
+  }
+
+  .foamImage {
+    object-position: top;
+    object-fit: fill;
+  }
+
+  .certificate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bubbleAvatar {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
+    min-height: 56px;
+    object-fit: cover;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .followTextContainer {
+    width: 32px;
+    height: 32px;
+  }
+
+  .followImg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .followText {
+    font-size: var(--font-body);
+    transform: translateY(-32px);
+    padding: 0 var(--spacing-s);
+  }
 }
 
 @media (max-width: 1280px) {
@@ -664,10 +715,12 @@
     align-items: center;
     text-align: center;
     gap: var(--spacing-l);
+    margin-left: 0 !important;
+    padding: 0 var(--spacing-m);
   }
 
   .follow {
-    position: fixed;
+    position: a;
     top: var(--spacing-s);
     right: var(--spacing-s);
     z-index: 999;
@@ -680,7 +733,7 @@
   }
 
   .contactLink {
-    position: fixed;
+    position: absolute;
     bottom: var(--spacing-s);
     right: var(--spacing-s);
     margin: 0;
@@ -694,18 +747,39 @@
   }
 
   .hTitle {
-    font-size: clamp(32px, 6vw, 48px);
+    font-size: clamp(28px, 6vw, 40px);
+    line-height: 1.3;
+    max-width: 90%;
+    margin: 0 auto;
   }
 
   .awards {
-    width: 70%;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto;
   }
 
   .awards p {
-    font-size: 1rem;
+    font-size: var(--font-body);
+    line-height: 1.5;
+    text-align: center;
+    max-width: 90%;
+    margin: var(--spacing-s) auto;
   }
 
   .awardList {
+    justify-content: center;
+  }
+
+  .scroll {
+    position: absolute;
+    bottom: var(--spacing-s);
+    left: var(--spacing-s);
+    z-index: 1000;
+    margin: 0 !important;
+    padding: 0;
+    display: flex;
+    align-items: center;
     justify-content: center;
   }
 
@@ -728,15 +802,52 @@
 }
 
 @media (max-width: 480px) {
+  .hero {
+    padding: var(--spacing-m) var(--spacing-s);
+  }
+
   .hTitle {
-    font-size: clamp(28px, 7vw, 36px);
+    font-size: clamp(22px, 6vw, 32px);
+    line-height: 1.3;
+    text-align: center;
+    max-width: 95%;
+    margin: 0 auto;
+  }
+
+  .awards {
+    width: 100%;
+    max-width: 95%;
+    margin: 0 auto;
+  }
+
+  .awards p {
+    font-size: var(--font-body);
+    text-align: center;
+    line-height: 1.5;
+    margin: var(--spacing-s) auto;
+  }
+
+  .awardList {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-s);
+  }
+
+  .hImg {
+    width: clamp(180px, 60vw, 200px);
+    height: clamp(180px, 60vw, 240px);
+  }
+
+  .awardListImage {
+    width: 28px;
+    height: 28px;
   }
 
   .heroImage {
-    max-height: 240px;
+    max-height: 200px;
   }
 
   .contactButton {
-    transform: scale(0.8);
+    transform: scale(0.75);
   }
 }
