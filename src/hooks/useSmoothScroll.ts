@@ -28,6 +28,7 @@ export function useSmoothScroll({
     sectionsRef.current = Array.from(document.querySelectorAll(selector))
   }, [selector, enabled])
 
+  // 3. Отмена текущей анимации
   const cancelScrollAnimation = useCallback(() => {
     if (animationFrameId.current !== null) {
       cancelAnimationFrame(animationFrameId.current)
@@ -89,6 +90,19 @@ export function useSmoothScroll({
     },
     [enabled, smoothScrollTo, delay, duration]
   )
+
+  useEffect(() => {
+    if (!enabled) return
+
+    const idFromHash = window.location.hash?.replace("#", "")
+    if (!idFromHash) return
+
+    const index = sectionsRef.current.findIndex((el) => el.id === idFromHash)
+
+    if (index !== -1) {
+      setTimeout(() => scrollTo(index), 500)
+    }
+  }, [enabled, scrollTo])
 
   const onWheel = useCallback(
     (e: WheelEvent) => {
