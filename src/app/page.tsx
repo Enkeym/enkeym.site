@@ -22,7 +22,8 @@ const sections = [
 export default function HomePage() {
   useSmoothScroll({
     selector: "main > section",
-    delay: 700
+    duration: 1000,
+    delay: 1100
   })
 
   return (

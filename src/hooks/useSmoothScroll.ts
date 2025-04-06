@@ -3,12 +3,39 @@ import { useCallback, useEffect, useRef } from "react"
 type ScrollOptions = {
   selector?: string
   delay?: number
+  duration?: number
   enabled?: boolean
+}
+
+function easeInOutQuad(t: number) {
+  return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t
+}
+
+function smoothScrollTo(targetY: number, duration: number = 800) {
+  const startY = window.scrollY || window.pageYOffset
+  const distance = targetY - startY
+  let startTime: number | null = null
+
+  const step = (currentTime: number) => {
+    if (!startTime) startTime = currentTime
+    const timeElapsed = currentTime - startTime
+    const progress = Math.min(timeElapsed / duration, 1)
+    const ease = easeInOutQuad(progress)
+
+    window.scrollTo(0, startY + distance * ease)
+
+    if (progress < 1) {
+      requestAnimationFrame(step)
+    }
+  }
+
+  requestAnimationFrame(step)
 }
 
 export function useSmoothScroll({
   selector = "section",
-  delay = 800,
+  delay = 1000,
+  duration = 800,
   enabled = true
 }: ScrollOptions = {}) {
   const sectionsRef = useRef<HTMLElement[]>([])
@@ -25,14 +52,20 @@ export function useSmoothScroll({
   const scrollTo = useCallback(
     (index: number) => {
       if (index < 0 || index >= sectionsRef.current.length) return
+
+      const target = sectionsRef.current[index]
+      const targetY = target.getBoundingClientRect().top + window.scrollY
+
       isScrolling.current = true
       currentSectionIndex.current = index
-      sectionsRef.current[index]?.scrollIntoView({ behavior: "smooth" })
+
+      smoothScrollTo(targetY, duration)
+
       setTimeout(() => {
         isScrolling.current = false
       }, delay)
     },
-    [delay]
+    [delay, duration]
   )
 
   const onWheel = useCallback(
