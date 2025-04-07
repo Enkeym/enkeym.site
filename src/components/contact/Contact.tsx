@@ -2,11 +2,11 @@
 
 import emailjs from "@emailjs/browser"
 import { motion } from "framer-motion"
+import dynamic from "next/dynamic"
 import { useEffect, useRef, useState } from "react"
 import { useInView } from "react-intersection-observer"
 import Turnstile from "react-turnstile"
 import styles from "./contact.module.css"
-import dynamic from "next/dynamic"
 
 const listVariant = {
   initial: { x: 100, opacity: 0 },

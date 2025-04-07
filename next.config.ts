@@ -46,8 +46,13 @@ const baseConfig: NextConfig = {
   output: "standalone",
 
   images: {
-    domains: ["enkeym.site"],
-    formats: ["image/webp", "image/avif"]
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "enkeym.site",
+        pathname: "/images/**"
+      }
+    ]
   },
 
   modularizeImports: {
