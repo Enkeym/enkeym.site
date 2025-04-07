@@ -1,5 +1,14 @@
+# *
 User-agent: *
 Allow: /
+
+# *
+User-agent: *
 Disallow: /404
 Disallow: /_not-found
+
+# Host
+Host: https://enkeym.site
+
+# Sitemaps
 Sitemap: https://enkeym.site/sitemap.xml

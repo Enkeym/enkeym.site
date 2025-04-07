@@ -51,9 +51,6 @@ const baseConfig: NextConfig = {
   },
 
   modularizeImports: {
-    "framer-motion": {
-      transform: "framer-motion/{{member}}"
-    },
     three: {
       transform: "three/src/{{member}}",
       skipDefaultConversion: true
