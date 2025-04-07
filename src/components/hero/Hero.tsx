@@ -238,7 +238,7 @@ const Hero = () => {
       {/* Фон + Canvas + пена + персонаж */}
       <div className={styles.bg}>
         <Canvas
-          frameloop="demand"
+          frameloop="always"
           dpr={[1, 1.5]}
           gl={{ antialias: false, powerPreference: "high-performance" }}
         >
