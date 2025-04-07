@@ -1,5 +1,5 @@
 #
-# 1) Сборка Next.js (статическая)
+# Сборка Next.js (статическая)
 #
 FROM node:20-alpine AS builder
 
@@ -15,7 +15,7 @@ RUN yarn build && yarn export
 # После этого появится /app/out/ (статический экспорт)
 
 #
-# 2) Сборка Nginx с Brotli из исходников (промежуточный образ)
+# Сборка Nginx с Brotli из исходников (промежуточный образ)
 #
 FROM alpine:3.17 AS build-nginx
 
@@ -70,10 +70,8 @@ RUN ./configure \
     && make -j$(nproc) \
     && make install
 
-# В этот момент в /usr/local/nginx лежат собранные бинарники Nginx
-
 #
-# 3) Финальный образ (production) - лёгкий Alpine + собранный Nginx + статика
+# Финальный образ (production) - лёгкий Alpine + собранный Nginx + статика
 #
 FROM alpine:3.17 AS production
 
@@ -91,7 +89,6 @@ RUN apk add --no-cache \
     pcre \
     zlib \
     brotli \
-    # Можно добавить tini или другие нужные пакеты
     && rm -rf /var/cache/apk/*
 
 # Подчищаем tmp, если остался
