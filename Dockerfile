@@ -9,18 +9,18 @@ WORKDIR /app
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
-# Копируем исходный код и билдим
+# Копируем исходный код
 COPY . .
+
+# Собираем проект
+# При output: 'export' в next.config.js => результат будет в /app/out
 RUN yarn build
-# После этого появится /app/out/ (статический экспорт)
 
 #
 # 2) Сборка Nginx с Brotli из исходников (промежуточный образ)
 #
 FROM alpine:3.17 AS build-nginx
 
-# Установим все нужные dev-зависимости для сборки
-# (добавляем сюда также `wget`)
 RUN apk add --no-cache \
     build-base \
     zlib-dev \
@@ -44,11 +44,11 @@ WORKDIR /tmp
 RUN wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz \
   && tar -zxvf nginx-${NGINX_VERSION}.tar.gz
 
-# 2.2) Клонируем репозиторий ngx_brotli с сабмодулями
+# 2.2) Клонируем ngx_brotli + сабмодули
 RUN git clone --depth=1 -b ${NGINX_BROTLI_COMMIT} https://github.com/google/ngx_brotli.git \
   && cd ngx_brotli && git submodule update --init --recursive
 
-# 2.3) Собираем Nginx с Brotli-модулем и нужными флагами
+# 2.3) Собираем Nginx с Brotli и нужными флагами
 WORKDIR /tmp/nginx-${NGINX_VERSION}
 RUN ./configure \
     --prefix=/usr/local/nginx \
@@ -74,13 +74,13 @@ RUN ./configure \
 #
 FROM alpine:3.17 AS production
 
-# Копируем собранный Nginx из предыдущего этапа
+# Копируем собранный Nginx
 COPY --from=build-nginx /usr/local/nginx /usr/local/nginx
 
-# Создадим удобные ссылки (чтобы nginx был доступен как команда)
+# Создаём удобный симлинк
 RUN ln -s /usr/local/nginx/sbin/nginx /usr/sbin/nginx
 
-# Удалим пакеты для сборки, установим лишь нужные для runtime
+# Ставим только нужные runtime-зависимости
 RUN apk add --no-cache \
     openssl \
     pcre \
@@ -88,32 +88,30 @@ RUN apk add --no-cache \
     brotli \
     && rm -rf /var/cache/apk/*
 
-# Подчищаем tmp (если остался)
+# Чистим tmp
 RUN rm -rf /tmp/*
 
-# Зададим окружение NGINX
+# Задаём окружение
 ENV NGINX_PATH=/usr/local/nginx
 ENV PATH="$PATH:/usr/local/nginx/sbin"
 
-# Удаляем дефолтные конфиги, если есть
+# Удаляем дефолтные конфиги nginx (если были)
 RUN rm -rf /etc/nginx/conf.d/* /etc/nginx/nginx.conf
 
 # Копируем свой конфиг Nginx
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Копируем статический экспорт Next.js
+# Копируем статический экспорт Next.js (из builder)
 COPY --from=builder /app/out /usr/share/nginx/html
 
-# Предварительно сжимаем .gz и .br
+# Предварительно сжимаем файлы в .gz и .br
 RUN find /usr/share/nginx/html -type f \( -name "*.js" -o -name "*.css" -o -name "*.html" -o -name "*.json" -o -name "*.svg" \) \
   | while read -r file; do \
       gzip -kf "$file"; \
       brotli -f -q 11 "$file"; \
   done
 
-# Открываем порты
 EXPOSE 80
 EXPOSE 443
 
-# Запускаем Nginx
 CMD ["nginx", "-g", "daemon off;"]

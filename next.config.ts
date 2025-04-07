@@ -33,7 +33,7 @@ const securityHeaders = [
 const baseConfig: NextConfig = {
   reactStrictMode: true,
   compress: true,
-  output: "standalone",
+  output: "export",
 
   images: {
     remotePatterns: [
