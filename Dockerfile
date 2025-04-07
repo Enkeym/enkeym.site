@@ -1,5 +1,5 @@
 #
-# Сборка Next.js (статическая)
+# 1) Сборка Next.js (статическая)
 #
 FROM node:20-alpine AS builder
 
@@ -15,11 +15,11 @@ RUN yarn build && yarn export
 # После этого появится /app/out/ (статический экспорт)
 
 #
-# Сборка Nginx с Brotli из исходников (промежуточный образ)
+# 2) Сборка Nginx с Brotli из исходников (промежуточный образ)
 #
 FROM alpine:3.17 AS build-nginx
 
-# Установим зависимости для сборки Nginx
+# Установим все нужные dev-зависимости для сборки
 RUN apk add --no-cache \
     build-base \
     zlib-dev \
@@ -30,9 +30,10 @@ RUN apk add --no-cache \
     libtool \
     git \
     linux-headers \
-    cmake
+    cmake \
+    brotli-dev    # <-- ВАЖНО! Добавляем brotli-dev
 
-# Укажем версии/репозитории
+# Зададим версии
 ENV NGINX_VERSION=1.25.1
 ENV NGINX_BROTLI_COMMIT=master
 
@@ -42,14 +43,11 @@ WORKDIR /tmp
 RUN wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz \
   && tar -zxvf nginx-${NGINX_VERSION}.tar.gz
 
-# 2.2) Скачиваем исходники Brotli-модуля от Google
+# 2.2) Клонируем репозиторий ngx_brotli с сабмодулями
 RUN git clone --depth=1 -b ${NGINX_BROTLI_COMMIT} https://github.com/google/ngx_brotli.git \
   && cd ngx_brotli && git submodule update --init --recursive
 
-# 2.3) Собираем Nginx с нужными модулями:
-#      - http_ssl_module, http_v2_module
-#      - brotli-модуль
-#      - gzip static
+# 2.3) Собираем Nginx с Brotli-модулем и нужными флагами
 WORKDIR /tmp/nginx-${NGINX_VERSION}
 RUN ./configure \
     --prefix=/usr/local/nginx \
@@ -71,19 +69,17 @@ RUN ./configure \
     && make install
 
 #
-# Финальный образ (production) - лёгкий Alpine + собранный Nginx + статика
+# 3) Финальный образ (production) - лёгкий Alpine + собранный Nginx + статика
 #
 FROM alpine:3.17 AS production
 
 # Копируем собранный Nginx из предыдущего этапа
 COPY --from=build-nginx /usr/local/nginx /usr/local/nginx
 
-# Создадим удобные ссылки
-# (чтобы nginx был доступен как команда)
+# Создадим удобные ссылки (чтобы nginx был доступен как команда)
 RUN ln -s /usr/local/nginx/sbin/nginx /usr/sbin/nginx
 
-# Удалим пакеты, которых не хотим в итоге
-# Установим лишь нужные для runtime (openssl, brotli, etc.)
+# Удалим пакеты для сборки, установим лишь нужные для runtime
 RUN apk add --no-cache \
     openssl \
     pcre \
@@ -91,7 +87,7 @@ RUN apk add --no-cache \
     brotli \
     && rm -rf /var/cache/apk/*
 
-# Подчищаем tmp, если остался
+# Подчищаем tmp (если остался)
 RUN rm -rf /tmp/*
 
 # Зададим окружение NGINX
