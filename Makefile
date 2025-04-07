@@ -13,11 +13,22 @@ clean:
 build:
 	sudo docker build -t $(NAME) .
 
-# Запустить контейнер
+# Запустить контейнер без SSL (порт 80 → 3000)
 run:
 	sudo docker run -d \
 		--restart unless-stopped \
 		-p $(PORT):80 \
+		--env-file .env \
+		--name $(NAME) \
+		$(NAME)
+
+# 🔐 Запустить контейнер с монтированием SSL
+ssl-run:
+	sudo docker run -d \
+		--restart unless-stopped \
+		-p 80:80 \
+		-p 443:443 \
+		-v /etc/nginx/ssl/enkeym.site:/etc/nginx/ssl:ro \
 		--env-file .env \
 		--name $(NAME) \
 		$(NAME)
