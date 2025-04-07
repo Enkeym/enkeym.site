@@ -1,8 +1,6 @@
 import { useGLTF } from "@react-three/drei"
 import { ComponentProps } from "react"
-import type { BufferGeometry } from "three/src/core/BufferGeometry"
-import type { Material } from "three/src/materials/Material"
-import type { Mesh } from "three/src/objects/Mesh"
+import type { BufferGeometry, Material, Mesh } from "three"
 
 type MugModelProps = ComponentProps<"group">
 
