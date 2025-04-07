@@ -25,8 +25,8 @@ const ModelCanvas = ({
       camera={{ fov: 35 }}
     >
       <Suspense fallback={<span className="loading">Загрузка модели...</span>}>
-        <ambientLight intensity={0.5} />
-        <directionalLight position={[2, 2, 2]} intensity={1} />
+        <ambientLight intensity={2} />
+        <directionalLight position={[2, 2, 2]} intensity={2} />
 
         {children}
 
