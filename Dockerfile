@@ -97,7 +97,7 @@ ENV PATH="$PATH:/usr/local/nginx/sbin"
 RUN rm -rf /etc/nginx/conf.d/* /etc/nginx/nginx.conf
 
 # Копируем свой конфиг Nginx
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY nginx.conf /usr/local/nginx/conf/nginx.conf
 
 # Копируем статический экспорт Next.js (из builder)
 COPY --from=builder /app/out /usr/share/nginx/html
