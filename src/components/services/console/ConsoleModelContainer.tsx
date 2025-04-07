@@ -1,5 +1,7 @@
-import ModelCanvas from "../ModelCanvas"
+import dynamic from "next/dynamic"
 import { ConsoleModel } from "./ConsoleModel"
+
+const ModelCanvas = dynamic(() => import("../ModelCanvas"), { ssr: false })
 
 const ConsoleModelContainer = () => {
   return (

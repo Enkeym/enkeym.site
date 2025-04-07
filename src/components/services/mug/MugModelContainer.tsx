@@ -1,5 +1,7 @@
-import ModelCanvas from "../ModelCanvas"
+import dynamic from "next/dynamic"
 import { MugModel } from "./MugModel"
+
+const ModelCanvas = dynamic(() => import("../ModelCanvas"), { ssr: false })
 
 const MugModelContainer = () => {
   return (

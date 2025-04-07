@@ -1,5 +1,7 @@
-import ModelCanvas from "../ModelCanvas"
+import dynamic from "next/dynamic"
 import { ComputerModel } from "./ComputerModel"
+
+const ModelCanvas = dynamic(() => import("../ModelCanvas"), { ssr: false })
 
 const ComputerModelContainer = () => {
   return (
