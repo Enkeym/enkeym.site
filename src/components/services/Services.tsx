@@ -1,12 +1,10 @@
 "use client"
 
-import { motion, useInView } from "framer-motion"
+import { motion } from "framer-motion"
+import dynamic from "next/dynamic"
 import Image from "next/image"
-import { useRef, useState } from "react"
-
-import ComputerModelContainer from "./computer/ComputerModelContainer"
-import ConsoleModelContainer from "./console/ConsoleModelContainer"
-import MugModelContainer from "./mug/MugModelContainer"
+import { useState } from "react"
+import { useInView } from "react-intersection-observer"
 import styles from "./services.module.css"
 
 const textVariants = {
@@ -56,17 +54,34 @@ const services: Service[] = [
   }
 ]
 
+const ComputerModelContainer = dynamic(
+  () => import("./computer/ComputerModelContainer"),
+  { ssr: false, loading: () => <div>Загрузка модели...</div> }
+)
+const ConsoleModelContainer = dynamic(
+  () => import("./console/ConsoleModelContainer"),
+  { ssr: false, loading: () => <div>Загрузка модели...</div> }
+)
+const MugModelContainer = dynamic(() => import("./mug/MugModelContainer"), {
+  ssr: false,
+  loading: () => <div>Загрузка модели...</div>
+})
+
 const Services = () => {
   const [currentServiceId, setCurrentServiceId] = useState<number>(1)
-  const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { margin: "-200px" })
+
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    rootMargin: "-200px"
+  })
 
   return (
     <div className={styles.services} ref={ref}>
       <div className={`${styles.sSection} ${styles.left}`}>
         <motion.h1
           variants={textVariants}
-          animate={isInView ? "animate" : "initial"}
+          initial="initial"
+          animate={inView ? "animate" : "initial"}
           className={styles.sTitle}
         >
           Что разрабатываю?
@@ -74,7 +89,8 @@ const Services = () => {
 
         <motion.div
           variants={listVariants}
-          animate={isInView ? "animate" : "initial"}
+          initial="initial"
+          animate={inView ? "animate" : "initial"}
           className={styles.serviceList}
         >
           {services.map((service) => (
@@ -94,6 +110,7 @@ const Services = () => {
                   alt={service.title}
                   width={48}
                   height={30}
+                  loading="lazy"
                 />
               </div>
               <div className={styles.serviceInfo}>

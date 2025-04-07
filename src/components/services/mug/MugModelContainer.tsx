@@ -1,21 +1,11 @@
-"use client"
-
-import { OrbitControls, PerspectiveCamera, Stage } from "@react-three/drei"
-import { Canvas } from "@react-three/fiber"
-import { Suspense } from "react"
+import ModelCanvas from "../ModelCanvas"
 import { MugModel } from "./MugModel"
 
 const MugModelContainer = () => {
   return (
-    <Canvas>
-      <Suspense fallback={null}>
-        <Stage environment="night" intensity={10}>
-          <MugModel />
-        </Stage>
-        <OrbitControls enableZoom={false} autoRotate />
-        <PerspectiveCamera position={[0, -1, 2]} zoom={0.7} makeDefault />
-      </Suspense>
-    </Canvas>
+    <ModelCanvas cameraPosition={[0, -1, 2]} cameraZoom={0.9}>
+      <MugModel scale={0.1} position={[-0.4, -0.3, 0]} />
+    </ModelCanvas>
   )
 }
 

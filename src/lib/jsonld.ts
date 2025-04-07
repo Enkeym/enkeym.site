@@ -1,3 +1,4 @@
+/* json.ts */
 export const portfolioJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",

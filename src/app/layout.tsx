@@ -1,4 +1,3 @@
-import { portfolioJsonLd } from "@/lib/jsonld"
 import { Inter } from "next/font/google"
 import "./styles/globals.css"
 import "./styles/variables.css"
@@ -20,7 +19,22 @@ export default function RootLayout({
         {/* Структурированные данные JSON-LD */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(portfolioJsonLd) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "Nikita",
+              url: "https://enkeym.site",
+              image: "https://enkeym.site/og-image.jpg",
+              jobTitle: "Fullstack Developer",
+              worksFor: {
+                "@type": "Organization",
+                name: "freelance",
+                url: "https://enkeym.site"
+              },
+              sameAs: ["https://t.me/enkeym"]
+            })
+          }}
         />
       </head>
       <body className={inter.className}>{children}</body>

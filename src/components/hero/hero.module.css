@@ -255,6 +255,15 @@
   }
 }
 
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 1rem;
+  height: 100%;
+}
+
 @media (max-width: 1536px) {
   .hTitle {
     font-size: clamp(32px, 6vw, 72px);

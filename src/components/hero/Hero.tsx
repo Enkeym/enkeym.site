@@ -1,10 +1,12 @@
 "use client"
 
+import { useSmoothScroll } from "@/hooks/useSmoothScroll"
 import { Canvas } from "@react-three/fiber"
-import { motion, useInView } from "framer-motion"
+import { motion } from "framer-motion"
 import Image from "next/image"
 import Link from "next/link"
-import { Suspense, useRef } from "react"
+import { Suspense } from "react"
+import { useInView } from "react-intersection-observer"
 import styles from "./hero.module.css"
 import Shape from "./Shape"
 import Speech from "./Speech"
@@ -36,12 +38,12 @@ const followVariants = {
   }
 }
 
-type platform = {
+type Platform = {
   name: string
   href: string
 }
 
-const platforms: platform[] = [
+const platforms: Platform[] = [
   {
     name: "telegram",
     href: "https://t.me/NikitaKorolev96"
@@ -49,8 +51,12 @@ const platforms: platform[] = [
 ]
 
 const Hero = () => {
-  const ref = useRef<HTMLDivElement | null>(null)
-  const isInView = useInView(ref, { margin: "-200px", once: false })
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    rootMargin: "-200px"
+  })
+
+  const { scrollToSection } = useSmoothScroll()
 
   return (
     <div className={styles.hero} ref={ref}>
@@ -58,7 +64,7 @@ const Hero = () => {
       <div className={`${styles.hSection} ${styles.left}`}>
         <motion.h1
           initial={{ y: -100, opacity: 0 }}
-          animate={isInView ? { y: 0, opacity: 1 } : {}}
+          animate={inView ? { y: 0, opacity: 1 } : {}}
           transition={{ duration: 1 }}
           className={styles.hTitle}
         >
@@ -70,7 +76,7 @@ const Hero = () => {
         <motion.div
           variants={awardVariants}
           initial="initial"
-          animate={isInView ? "animate" : "initial"}
+          animate={inView ? "animate" : "initial"}
           className={styles.awards}
         >
           <motion.h2 variants={awardVariants}>Fullstack разработчик</motion.h2>
@@ -89,6 +95,7 @@ const Hero = () => {
                     width={38}
                     height={38}
                     className={styles.awardListImage}
+                    loading="lazy"
                   />
                 </motion.div>
               )
@@ -133,7 +140,7 @@ const Hero = () => {
         <motion.div
           variants={followVariants}
           initial="initial"
-          animate={isInView ? "animate" : "initial"}
+          animate={inView ? "animate" : "initial"}
           className={styles.follow}
         >
           {platforms.map(({ name, href }) => (
@@ -149,6 +156,7 @@ const Hero = () => {
                 width={20}
                 height={20}
                 className={styles.followImg}
+                loading="lazy"
               />
             </Link>
           ))}
@@ -162,7 +170,7 @@ const Hero = () => {
         <motion.div
           variants={certificateVariants}
           initial="initial"
-          animate={isInView ? "animate" : "initial"}
+          animate={inView ? "animate" : "initial"}
           className={styles.certificate}
         >
           <Image
@@ -170,6 +178,7 @@ const Hero = () => {
             alt="Сертификат"
             width={70}
             height={70}
+            loading="lazy"
           />
           ПРОДУМАННЫЙ UX
           <br />
@@ -178,10 +187,14 @@ const Hero = () => {
           ДОСТУПНОСТЬ A11Y
         </motion.div>
 
-        <Link
-          href="/#contact"
+        <a
+          href="#contact"
           className={styles.contactLink}
           aria-label="Связаться со мной"
+          onClick={(e) => {
+            e.preventDefault()
+            scrollToSection(2)
+          }}
         >
           <motion.div
             className={styles.contactButton}
@@ -219,13 +232,19 @@ const Hero = () => {
               </svg>
             </div>
           </motion.div>
-        </Link>
+        </a>
       </div>
 
-      {/* Фон и пена */}
+      {/* Фон + Canvas + пена + персонаж */}
       <div className={styles.bg}>
-        <Canvas>
-          <Suspense fallback={null}>
+        <Canvas
+          frameloop="demand"
+          dpr={[1, 1.5]}
+          gl={{ antialias: false, powerPreference: "high-performance" }}
+        >
+          <Suspense
+            fallback={<span className="loading">Загрузка модели...</span>}
+          >
             <Shape />
           </Suspense>
         </Canvas>

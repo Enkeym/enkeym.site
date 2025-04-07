@@ -12,6 +12,7 @@ const Speech = () => {
       initial={{ opacity: 0, x: 20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.5 }}
+      aria-live="polite"
     >
       <div className={styles.bubble}>
         <TypeAnimation
@@ -30,10 +31,11 @@ const Speech = () => {
       </div>
       <Image
         src="/man.png"
-        alt="Avatar"
+        alt="Мой аватар"
         width={50}
         height={50}
         className={styles.bubbleAvatar}
+        loading="lazy"
       />
     </motion.div>
   )

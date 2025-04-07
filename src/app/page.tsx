@@ -1,8 +1,9 @@
 "use client"
 
 import { useSmoothScroll } from "@/hooks/useSmoothScroll"
+import { useInView } from "framer-motion"
 import dynamic from "next/dynamic"
-import { Suspense } from "react"
+import { ComponentType, Suspense, useRef } from "react"
 
 const Hero = dynamic(() => import("@/components/hero/Hero"), { ssr: false })
 const Services = dynamic(() => import("@/components/services/Services"), {
@@ -12,7 +13,12 @@ const Contact = dynamic(() => import("@/components/contact/Contact"), {
   ssr: false
 })
 
-const sections = [
+type SectionItem = {
+  id: string
+  component: ComponentType
+}
+
+const sections: SectionItem[] = [
   { id: "home", component: Hero },
   { id: "services", component: Services },
   { id: "contact", component: Contact }
@@ -27,13 +33,31 @@ export default function HomePage() {
 
   return (
     <main>
-      {sections.map(({ id, component: Component }) => (
-        <section key={id} id={id}>
-          <Suspense fallback={<div>Загрузка секции {id}...</div>}>
-            <Component />
-          </Suspense>
-        </section>
+      {sections.map(({ id, component }) => (
+        <LazySection key={id} id={id} Component={component} />
       ))}
     </main>
+  )
+}
+
+type LazySectionProps = {
+  id: string
+  Component: ComponentType
+}
+
+function LazySection({ id, Component }: LazySectionProps) {
+  const ref = useRef<HTMLDivElement>(null)
+  const isInView = useInView(ref, { margin: "-200px" })
+
+  return (
+    <section ref={ref} id={id}>
+      {isInView ? (
+        <Suspense fallback={<div>Загрузка секции {id}...</div>}>
+          <Component />
+        </Suspense>
+      ) : (
+        <div style={{ height: 500 }}>Загрузка секции {id}...</div>
+      )}
+    </section>
   )
 }

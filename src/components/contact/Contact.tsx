@@ -1,11 +1,12 @@
 "use client"
 
 import emailjs from "@emailjs/browser"
-import { motion, useInView } from "framer-motion"
+import { motion } from "framer-motion"
 import { useEffect, useRef, useState } from "react"
+import { useInView } from "react-intersection-observer"
 import Turnstile from "react-turnstile"
-import ContactSvg from "./ContactSvg"
 import styles from "./contact.module.css"
+import dynamic from "next/dynamic"
 
 const listVariant = {
   initial: { x: 100, opacity: 0 },
@@ -16,10 +17,11 @@ const listVariant = {
   }
 }
 
+const ContactSvg = dynamic(() => import("./ContactSvg"), { ssr: false })
+
 const Contact = () => {
-  const ref = useRef<HTMLDivElement | null>(null)
   const form = useRef<HTMLFormElement | null>(null)
-  const isInView = useInView(ref, { margin: "-200px" })
+  const { ref, inView } = useInView({ triggerOnce: true, rootMargin: "-200px" })
 
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
@@ -74,9 +76,7 @@ const Contact = () => {
         process.env.NEXT_PUBLIC_SERVICE_ID!,
         process.env.NEXT_PUBLIC_TEMPLATE_ID!,
         form.current,
-        {
-          publicKey: process.env.NEXT_PUBLIC_PUBLIC_KEY!
-        }
+        { publicKey: process.env.NEXT_PUBLIC_PUBLIC_KEY! }
       )
 
       setSuccess(true)
@@ -99,9 +99,11 @@ const Contact = () => {
           ref={form}
           onSubmit={sendEmail}
           variants={listVariant}
-          animate={isInView ? "animate" : "initial"}
+          initial="initial"
+          animate={inView ? "animate" : "initial"}
           className={styles.foam}
         >
+          {/* Anti-bot hidden input */}
           <input
             type="text"
             name="bot_field"
@@ -124,12 +126,13 @@ const Contact = () => {
               id="user_name"
               placeholder="Иван Иванов"
               className={styles.input}
+              required
             />
           </motion.div>
 
           <motion.div variants={listVariant} className={styles.formItem}>
             <label htmlFor="user_email" className={styles.label}>
-              Электронная почта
+              Почта
             </label>
             <input
               type="email"
@@ -137,6 +140,7 @@ const Contact = () => {
               id="user_email"
               placeholder="ivan@example.com"
               className={styles.input}
+              required
             />
           </motion.div>
 
@@ -151,6 +155,7 @@ const Contact = () => {
               placeholder="Напишите сообщение..."
               className={styles.textarea}
               maxLength={1000}
+              required
             />
           </motion.div>
 
@@ -173,8 +178,25 @@ const Contact = () => {
             </button>
           </motion.div>
 
-          {success && <span>Ваше сообщение успешно отправлено!</span>}
-          {error && <span>Произошла ошибка при отправке.</span>}
+          {success && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className={styles.feedback}
+            >
+              ✅ Ваше сообщение успешно отправлено!
+            </motion.div>
+          )}
+
+          {error && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className={styles.feedback}
+            >
+              ❌ Произошла ошибка при отправке.
+            </motion.div>
+          )}
         </motion.form>
       </div>
 
