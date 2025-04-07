@@ -30,7 +30,7 @@ const Speech = () => {
         />
       </div>
       <Image
-        src="/man.png"
+        src="/man.avif"
         alt="Мой аватар"
         width={50}
         height={50}

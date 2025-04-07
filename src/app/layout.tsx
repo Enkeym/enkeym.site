@@ -13,7 +13,7 @@ export default function RootLayout({
     <html lang="ru">
       <head>
         <link rel="manifest" href="/manifest.json" />
-        <link rel="apple-touch-icon" href="/og-image.jpg" />
+        <link rel="apple-touch-icon" href="/og-image.avif" />
         <meta name="theme-color" content="#12071f" />
 
         {/* Структурированные данные JSON-LD */}
@@ -25,7 +25,7 @@ export default function RootLayout({
               "@type": "Person",
               name: "Nikita",
               url: "https://enkeym.site",
-              image: "https://enkeym.site/og-image.jpg",
+              image: "https://enkeym.site/og-image.avif",
               jobTitle: "Fullstack Developer",
               worksFor: {
                 "@type": "Organization",

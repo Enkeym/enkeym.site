@@ -12,7 +12,7 @@ export const SEO = {
     site_name: "Nikita Portfolio",
     images: [
       {
-        url: `${siteUrl}/og-image.jpg`,
+        url: `${siteUrl}/og-image.avif`,
         width: 1200,
         height: 630,
         alt: "Nikita Portfolio Preview",
@@ -49,11 +49,11 @@ export const SEO = {
   additionalLinkTags: [
     {
       rel: "icon",
-      href: "/favicon.ico"
+      href: "/favicon.avif"
     },
     {
       rel: "apple-touch-icon",
-      href: "/og-image.jpg"
+      href: "/og-image.avif"
     },
     {
       rel: "manifest",
@@ -67,7 +67,7 @@ export const SEO = {
       "@type": "Person",
       name: "Nikita",
       url: siteUrl,
-      image: `${siteUrl}/og-image.jpg`,
+      image: `${siteUrl}/og-image.avif`,
       jobTitle: "Fullstack Developer",
       worksFor: {
         "@type": "Organization",

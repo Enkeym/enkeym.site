@@ -251,7 +251,7 @@ const Hero = () => {
 
         <div className={styles.foamOverlay}>
           <Image
-            src="/foam.png"
+            src="/foam.avif"
             alt="Пена"
             fill
             priority
@@ -261,7 +261,7 @@ const Hero = () => {
 
         <div className={styles.hImg}>
           <Image
-            src="/man.png"
+            src="/man.avif"
             alt="Главный персонаж"
             fill
             className={styles.heroImage}

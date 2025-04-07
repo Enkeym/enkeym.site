@@ -8,12 +8,12 @@
   "description": "UI Designer & Fullstack Developer",
   "icons": [
     {
-      "src": "/favicon.ico",
+      "src": "/favicon.avif",
       "sizes": "64x64",
       "type": "image/x-icon"
     },
     {
-      "src": "/og-image.jpg",
+      "src": "/og-image.avif",
       "sizes": "512x512",
       "type": "image/jpeg",
       "purpose": "any maskable"
