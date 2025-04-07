@@ -1,9 +1,13 @@
+import { portfolioJsonLd } from "./jsonld"
+
 const siteUrl = "https://enkeym.site"
 
 export const SEO = {
   title: "Nikita — UI/UX Designer & Developer",
-  description: "Портфолио, UI дизайн, Frontend 3D и взаимодействие с Canvas.",
+  description:
+    "Разработка современных адаптивных веб-приложений и Telegram-ботов с акцентом на производительность, дизайн и SEO.",
   canonical: siteUrl,
+  themeColor: "#12071f",
 
   openGraph: {
     type: "website",
@@ -16,7 +20,7 @@ export const SEO = {
         width: 1200,
         height: 630,
         alt: "Nikita Portfolio Preview",
-        type: "image/jpeg"
+        type: "image/avif"
       }
     ],
     profile: {
@@ -31,50 +35,19 @@ export const SEO = {
   },
 
   additionalMetaTags: [
-    {
-      name: "author",
-      content: "Nikita (@enkeym)"
-    },
+    { name: "author", content: "Nikita (@enkeym)" },
     {
       name: "keywords",
-      content:
-        "Nikita, UI/UX, Frontend, React, Canvas, 3D, Portfolio, Developer"
+      content: "Nikita, UI/UX, Frontend, React, Canvas, 3D, Portfolio"
     },
-    {
-      property: "og:see_also",
-      content: "https://t.me/enkeym"
-    }
+    { property: "og:see_also", content: "https://t.me/enkeym" }
   ],
 
   additionalLinkTags: [
-    {
-      rel: "icon",
-      href: "/favicon.avif"
-    },
-    {
-      rel: "apple-touch-icon",
-      href: "/og-image.avif"
-    },
-    {
-      rel: "manifest",
-      href: "/manifest.json"
-    }
+    { rel: "icon", href: "/favicon.avif", type: "image/avif" },
+    { rel: "apple-touch-icon", href: "/og-image.avif" },
+    { rel: "manifest", href: "/manifest.json" }
   ],
 
-  additionalJsonLd: [
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      name: "Nikita",
-      url: siteUrl,
-      image: `${siteUrl}/og-image.avif`,
-      jobTitle: "Fullstack Developer",
-      worksFor: {
-        "@type": "Organization",
-        name: "freelance",
-        url: siteUrl
-      },
-      sameAs: ["https://t.me/enkeym"]
-    }
-  ]
+  additionalJsonLd: [portfolioJsonLd]
 }
