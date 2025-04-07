@@ -24,10 +24,12 @@ run:
 
 # 🔐 Запустить контейнер с монтированием SSL
 ssl-run:
+	-sudo docker stop $(NAME) || true
+	-sudo docker rm $(NAME) || true
 	sudo docker run -d \
 		--restart unless-stopped \
-		-p $(PORT):80 \
-		-p $(PORT):443 \
+		-p 80:80 \
+		-p 443:443 \
 		-v /etc/nginx/ssl/enkeym.site:/etc/nginx/ssl:ro \
 		--env-file .env \
 		--name $(NAME) \
