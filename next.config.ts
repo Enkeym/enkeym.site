@@ -19,25 +19,15 @@ const secureHeaders = createSecureHeaders({
       objectSrc: ["'none'"]
     }
   },
-  frameGuard: "deny",
-  referrerPolicy: "strict-origin-when-cross-origin",
-  xssProtection: "block-rendering",
-  nosniff: "nosniff",
-  expectCT: [true, { maxAge: 86400, enforce: true }]
+  referrerPolicy: "strict-origin-when-cross-origin"
 })
 
 const securityHeaders = [
   ...secureHeaders,
   {
-    key: "Strict-Transport-Security",
-    value: "max-age=63072000; includeSubDomains; preload"
-  },
-  { key: "X-DNS-Prefetch-Control", value: "on" },
-  {
-    key: "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=()"
-  },
-  { key: "X-Content-Type-Options", value: "nosniff" }
+    key: "X-DNS-Prefetch-Control",
+    value: "on"
+  }
 ]
 
 const baseConfig: NextConfig = {

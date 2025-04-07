@@ -1,39 +1,125 @@
-# --- Этап сборки приложения ---
-  FROM node:20-alpine AS builder
+#
+# 1) Сборка Next.js (статическая)
+#
+FROM node:20-alpine AS builder
 
-  WORKDIR /app
-  
-  COPY package.json yarn.lock ./
-  RUN yarn install --frozen-lockfile
-  
-  COPY . .
-  RUN yarn build
-  
-  # --- Этап продакшена: nginx + статика + brotli/gzip ---
-  FROM nginx:1.25-alpine AS production
-  
-  LABEL author="enkeym.site"
-  
-  # Устанавливаем brotli CLI
-  RUN apk add --no-cache brotli
-  
-  # Удаляем дефолтные конфиги nginx
-  RUN rm -rf /etc/nginx/conf.d/*
-  COPY nginx.conf /etc/nginx/nginx.conf
-  
-  # Копируем статику из Next.js
-  COPY --from=builder /app/public /usr/share/nginx/html
-  COPY --from=builder /app/.next/static /usr/share/nginx/html/_next/static
-  
-  # Генерация .br и .gz заранее
-  RUN find /usr/share/nginx/html -type f \( -name "*.js" -o -name "*.css" -o -name "*.html" -o -name "*.json" -o -name "*.svg" \) | while read -r file; do \
-      brotli -f -q 11 "$file"; \
+WORKDIR /app
+
+# Устанавливаем зависимости
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
+
+# Копируем исходный код и билдим
+COPY . .
+RUN yarn build && yarn export
+# После этого появится /app/out/ (статический экспорт)
+
+#
+# 2) Сборка Nginx с Brotli из исходников (промежуточный образ)
+#
+FROM alpine:3.17 AS build-nginx
+
+# Установим зависимости для сборки Nginx
+RUN apk add --no-cache \
+    build-base \
+    zlib-dev \
+    pcre-dev \
+    openssl-dev \
+    autoconf \
+    automake \
+    libtool \
+    git \
+    linux-headers \
+    cmake
+
+# Укажем версии/репозитории
+ENV NGINX_VERSION=1.25.1
+ENV NGINX_BROTLI_COMMIT=master
+
+WORKDIR /tmp
+
+# 2.1) Скачиваем исходники Nginx
+RUN wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz \
+  && tar -zxvf nginx-${NGINX_VERSION}.tar.gz
+
+# 2.2) Скачиваем исходники Brotli-модуля от Google
+RUN git clone --depth=1 -b ${NGINX_BROTLI_COMMIT} https://github.com/google/ngx_brotli.git \
+  && cd ngx_brotli && git submodule update --init --recursive
+
+# 2.3) Собираем Nginx с нужными модулями:
+#      - http_ssl_module, http_v2_module
+#      - brotli-модуль
+#      - gzip static
+WORKDIR /tmp/nginx-${NGINX_VERSION}
+RUN ./configure \
+    --prefix=/usr/local/nginx \
+    --with-http_ssl_module \
+    --with-http_v2_module \
+    --with-http_gzip_static_module \
+    --with-threads \
+    --with-file-aio \
+    --add-module=/tmp/ngx_brotli \
+    --without-http_fastcgi_module \
+    --without-http_scgi_module \
+    --without-http_uwsgi_module \
+    --without-mail_pop3_module \
+    --without-mail_imap_module \
+    --without-mail_smtp_module \
+    --with-http_stub_status_module \
+    --with-debug \
+    && make -j$(nproc) \
+    && make install
+
+# В этот момент в /usr/local/nginx лежат собранные бинарники Nginx
+
+#
+# 3) Финальный образ (production) - лёгкий Alpine + собранный Nginx + статика
+#
+FROM alpine:3.17 AS production
+
+# Копируем собранный Nginx из предыдущего этапа
+COPY --from=build-nginx /usr/local/nginx /usr/local/nginx
+
+# Создадим удобные ссылки
+# (чтобы nginx был доступен как команда)
+RUN ln -s /usr/local/nginx/sbin/nginx /usr/sbin/nginx
+
+# Удалим пакеты, которых не хотим в итоге
+# Установим лишь нужные для runtime (openssl, brotli, etc.)
+RUN apk add --no-cache \
+    openssl \
+    pcre \
+    zlib \
+    brotli \
+    # Можно добавить tini или другие нужные пакеты
+    && rm -rf /var/cache/apk/*
+
+# Подчищаем tmp, если остался
+RUN rm -rf /tmp/*
+
+# Зададим окружение NGINX
+ENV NGINX_PATH=/usr/local/nginx
+ENV PATH="$PATH:/usr/local/nginx/sbin"
+
+# Удаляем дефолтные конфиги, если есть
+RUN rm -rf /etc/nginx/conf.d/* /etc/nginx/nginx.conf
+
+# Копируем свой конфиг Nginx
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Копируем статический экспорт Next.js
+COPY --from=builder /app/out /usr/share/nginx/html
+
+# Предварительно сжимаем .gz и .br
+RUN find /usr/share/nginx/html -type f \( -name "*.js" -o -name "*.css" -o -name "*.html" -o -name "*.json" -o -name "*.svg" \) \
+  | while read -r file; do \
       gzip -kf "$file"; \
+      brotli -f -q 11 "$file"; \
   done
-  
-  # Порты HTTPS + HTTP
-  EXPOSE 443
-  EXPOSE 80
-  
-  CMD ["nginx", "-g", "daemon off;"]
-  
+
+# Открываем порты
+EXPOSE 80
+EXPOSE 443
+
+# Запускаем Nginx
+CMD ["nginx", "-g", "daemon off;"]
