@@ -12,12 +12,11 @@ RUN yarn install --frozen-lockfile
 # Копируем исходный код
 COPY . .
 
-# Собираем проект
-# При output: 'export' в next.config.js => результат будет в /app/out
+# Собираем проект (создаст папку /app/out при output: 'export')
 RUN yarn build
 
 #
-# 2) Сборка Nginx с Brotli из исходников (промежуточный образ)
+# 2) Сборка Nginx с Brotli (промежуточный образ)
 #
 FROM alpine:3.17 AS build-nginx
 
@@ -40,16 +39,16 @@ ENV NGINX_BROTLI_COMMIT=master
 
 WORKDIR /tmp
 
-# 2.1) Скачиваем исходники Nginx
+# Исходники Nginx
 RUN wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz \
   && tar -zxvf nginx-${NGINX_VERSION}.tar.gz
 
-# 2.2) Клонируем ngx_brotli + сабмодули
+# Brotli-модуль
 RUN git clone --depth=1 -b ${NGINX_BROTLI_COMMIT} https://github.com/google/ngx_brotli.git \
   && cd ngx_brotli && git submodule update --init --recursive
 
-# 2.3) Собираем Nginx с Brotli и нужными флагами
 WORKDIR /tmp/nginx-${NGINX_VERSION}
+
 RUN ./configure \
     --prefix=/usr/local/nginx \
     --with-http_ssl_module \
@@ -91,11 +90,10 @@ RUN apk add --no-cache \
 # Чистим tmp
 RUN rm -rf /tmp/*
 
-# Задаём окружение
 ENV NGINX_PATH=/usr/local/nginx
 ENV PATH="$PATH:/usr/local/nginx/sbin"
 
-# Удаляем дефолтные конфиги nginx (если были)
+# Удаляем дефолтные конфиги nginx
 RUN rm -rf /etc/nginx/conf.d/* /etc/nginx/nginx.conf
 
 # Копируем свой конфиг Nginx
