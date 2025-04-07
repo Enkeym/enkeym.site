@@ -20,6 +20,7 @@ RUN yarn build && yarn export
 FROM alpine:3.17 AS build-nginx
 
 # Установим все нужные dev-зависимости для сборки
+# (добавляем сюда также `wget`)
 RUN apk add --no-cache \
     build-base \
     zlib-dev \
@@ -31,9 +32,9 @@ RUN apk add --no-cache \
     git \
     linux-headers \
     cmake \
-    brotli-dev    # <-- ВАЖНО! Добавляем brotli-dev
+    brotli-dev \
+    wget
 
-# Зададим версии
 ENV NGINX_VERSION=1.25.1
 ENV NGINX_BROTLI_COMMIT=master
 
