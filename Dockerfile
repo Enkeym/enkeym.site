@@ -11,7 +11,7 @@ RUN yarn install --frozen-lockfile
 
 # Копируем исходный код и билдим
 COPY . .
-RUN yarn build && yarn export
+RUN yarn build
 # После этого появится /app/out/ (статический экспорт)
 
 #
