@@ -14,7 +14,7 @@
     "jsx": "preserve",
     "incremental": true,
     "typeRoots": ["./types", "./node_modules/@types"],
-    "types": ["jest", "node"],
+    "types": ["node"],
 
     "plugins": [
       {
@@ -31,7 +31,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "next-sitemap.config.js",
-    "jest.setup.ts",
     "__tests__"
   ],
   "exclude": ["node_modules"]

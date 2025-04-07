@@ -7,15 +7,14 @@ const postcssConfig = {
   plugins: [
     autoprefixer(),
 
-    // Только в production
     isProduction &&
       purgecss({
-        rejected: true,
         content: [
           "./app/**/*.{js,ts,jsx,tsx}",
           "./pages/**/*.{js,ts,jsx,tsx}",
           "./components/**/*.{js,ts,jsx,tsx}",
-          "./src/**/*.{js,ts,jsx,tsx}"
+          "./src/**/*.{js,ts,jsx,tsx}",
+          "./public/index.html"
         ],
         safelist: {
           standard: [
@@ -26,12 +25,17 @@ const postcssConfig = {
             /^slide/,
             /^slick/,
             /^bg-/,
+            /^text-/,
             /^motion-/,
-            /^react-/
-          ]
+            /^react-/,
+            /^Toastify/,
+            /^arrow/
+          ],
+          deep: [/^::/, /^data-/]
         },
         defaultExtractor: (content: string) =>
-          content.match(/[\w-/:]+(?<!:)/g) || []
+          content.match(/[\w-/:.]+(?<!:)/g) || [],
+        rejected: true
       })
   ].filter(Boolean)
 }

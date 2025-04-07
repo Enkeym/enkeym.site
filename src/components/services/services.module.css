@@ -1,25 +1,25 @@
 .services {
+  display: flex;
   height: 100%;
   overflow: hidden;
-  display: flex;
 }
 
 .sSection {
-  width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  width: 50%;
 }
 
 .sSection.left {
-  width: auto;
   padding-left: 40px;
+  width: auto;
 }
 
 .sTitle {
   font-size: var(--font-subtitle);
-  line-height: 1.1;
   font-weight: 800;
+  line-height: 1.1;
   margin-bottom: 32px;
   max-width: 90%;
   word-break: break-word;
@@ -32,31 +32,33 @@
 }
 
 .service {
-  width: 70%;
-  padding: 30px;
-  border-radius: 20px;
-  background-color: #2f213f;
-  display: flex;
   align-items: center;
-  gap: 16px;
+  background-color: #2f213f;
+  border-radius: 20px;
   cursor: pointer;
+  display: flex;
+  gap: 16px;
+  padding: 30px;
+  width: 70%;
 }
 
 .serviceIcon {
-  width: 48px;
-  height: 48px;
+  align-items: center;
   border-radius: 100%;
   display: flex;
-  align-items: center;
+  height: 48px;
   justify-content: center;
+  width: 48px;
 }
 
 .icon1 {
   background-color: #0a192f;
 }
+
 .icon2 {
   background-color: #229ed9;
 }
+
 .icon3 {
   background-color: #f59e0b;
 }
@@ -79,20 +81,20 @@
 .loading {
   color: white;
   font-size: 14px;
+  left: 50%;
+  pointer-events: none;
   position: absolute;
   top: 50%;
-  left: 50%;
   transform: translate(-50%, -50%);
-  pointer-events: none;
 }
 
-@media (max-width: 1536px) {
+@media (width <= 1536px) {
   .service {
     width: 70%;
   }
 }
 
-@media (max-width: 1280px) {
+@media (width <= 1280px) {
   .sTitle {
     font-size: clamp(--font-subtitle);
   }
@@ -106,7 +108,7 @@
   }
 }
 
-@media (max-width: 1024px) {
+@media (width <= 1024px) {
   .sTitle {
     font-size: var(--font-subtitle);
   }
@@ -120,11 +122,11 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .services {
     align-items: center;
-    justify-content: center;
     flex-direction: column;
+    justify-content: center;
   }
 
   .sTitle {
@@ -140,13 +142,13 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (width <= 480px) {
   .sTitle {
     font-size: calc(var(--font-heading) * 1.8);
   }
 }
 
-@media (max-width: 360px) {
+@media (width <= 360px) {
   .sTitle {
     font-size: var(--font-small);
   }

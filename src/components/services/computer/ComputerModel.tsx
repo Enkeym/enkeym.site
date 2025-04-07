@@ -1,6 +1,6 @@
 import { useGLTF } from "@react-three/drei"
 import { ComponentProps } from "react"
-import { BufferGeometry, Material, Mesh } from "three"
+import type { BufferGeometry, Material, Mesh } from "three/src/objects/Mesh"
 
 type GLTFResult = {
   nodes: {

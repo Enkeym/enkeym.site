@@ -1,41 +1,41 @@
 .contact {
-  height: 100%;
   display: flex;
   gap: 100px;
+  height: 100%;
 }
 
 .cSection {
-  width: 50%;
-  height: 100%;
-  padding: 20px;
-  display: flex;
   align-items: center;
+  display: flex;
+  height: 100%;
   justify-content: center;
+  padding: 20px;
+  width: 50%;
 }
 
 .cSection:last-child {
-  background-color: rgba(2, 2, 45, 0.187);
-  margin: 50px 0px;
+  background-color: rgb(2 2 45 / 18.7%);
+  border-radius: 50% 0;
+  margin: 50px 0;
   padding: 50px;
-  border-radius: 50% 0px;
 }
 
 .foam {
-  width: 80%;
+  background-color: rgb(2 2 45 / 6.6%);
+  border-radius: 50px;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  background-color: rgba(2, 2, 45, 0.066);
-  padding: 5px 50px 30px;
-  border-radius: 50px;
   margin-top: 40px;
+  padding: 5px 50px 30px;
+  width: 80%;
 }
 
 .input,
 .textarea {
-  padding: 12px;
   border: none;
   border-radius: 5px;
+  padding: 12px;
 }
 
 .formItem {
@@ -50,11 +50,11 @@
 
 .formButton {
   background-color: #dd4c62;
-  color: white;
-  padding: 20px;
   border: none;
   border-radius: 10px;
+  color: white;
   cursor: pointer;
+  padding: 20px;
 }
 
 .hidden {
@@ -62,29 +62,29 @@
 }
 
 .submitRow {
-  display: flex;
   align-items: center;
-  gap: 20px;
+  display: flex;
   flex-wrap: wrap;
+  gap: 20px;
 }
 
 .turnstileWrapper {
   flex-shrink: 0;
 }
 
-@media (max-width: 1280px) {
+@media (width <= 1280px) {
   .foam {
     width: 100%;
   }
 }
 
-@media (max-width: 1024px) {
+@media (width <= 1024px) {
   .contact {
     gap: 30px;
   }
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   .contact {
     flex-direction: column;
   }

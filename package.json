@@ -4,20 +4,20 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && yarn postbuild",
+    "postbuild": "cross-env NODE_ENV=production next-sitemap",
     "start": "next start",
-    "postbuild": "NODE_ENV=production next-sitemap",
     "lint": "next lint",
     "analyze": "cross-env ANALYZE=true next build",
     "analyze:deadcode": "knip",
-    "test": "yarn analyze && yarn lint",
-    "audit": "lhci autorun"
+    "test": "yarn analyze && yarn lint"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
     "@next/bundle-analyzer": "^15.2.4",
     "@react-three/drei": "^10.0.5",
     "@react-three/fiber": "^9.1.1",
+    "@types/next": "^9.0.0",
     "framer-motion": "^12.6.3",
     "next": "15.2.4",
     "next-secure-headers": "^2.2.0",
@@ -33,13 +33,9 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@fullhuman/postcss-purgecss": "^7.0.2",
-    "@jest/globals": "^29.7.0",
-    "@lhci/cli": "^0.14.0",
     "@testing-library/dom": "^10.4.0",
-    "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
-    "@types/jest": "^29.5.14",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
@@ -48,13 +44,8 @@
     "cross-env": "^7.0.3",
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
-    "jest": "^29.7.0",
-    "jest-axe": "^10.0.0",
     "knip": "^5.47.0",
     "postcss": "^8.5.3",
-    "stylelint": "^16.18.0",
-    "ts-jest": "^29.3.1",
-    "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   }
 }

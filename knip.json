@@ -11,16 +11,9 @@
   "ignoreDependencies": [
     "eslint",
     "eslint-config-next",
-    "stylelint",
-    "stylelint-no-unused-selectors",
     "next-seo",
     "@testing-library/dom",
-    "@testing-library/jest-dom",
     "@testing-library/react",
-    "@testing-library/user-event",
-    "jest-axe",
-    "ts-jest",
-    "ts-node",
-    "@jest/globals"
+    "@testing-library/user-event"
   ]
 }
