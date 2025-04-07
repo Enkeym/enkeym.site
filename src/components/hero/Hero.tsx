@@ -50,6 +50,14 @@ const platforms: Platform[] = [
   }
 ]
 
+const handleScrollToContact = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  e.preventDefault()
+  const target = document.getElementById("contact")
+  if (target) {
+    target.scrollIntoView({ behavior: "smooth" })
+  }
+}
+
 const Hero = () => {
   const { ref, inView } = useInView({
     triggerOnce: true,
@@ -191,10 +199,7 @@ const Hero = () => {
           href="#contact"
           className={styles.contactLink}
           aria-label="Связаться со мной"
-          onClick={(e) => {
-            e.preventDefault()
-            scrollToSection(2)
-          }}
+          onClick={handleScrollToContact}
         >
           <motion.div
             className={styles.contactButton}

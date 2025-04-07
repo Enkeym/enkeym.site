@@ -1,4 +1,5 @@
-import { portfolioJsonLd } from "./jsonld"
+// seo.ts
+import { homepageJsonLd, portfolioJsonLd, websiteJsonLd } from "./jsonld"
 
 const siteUrl = "https://enkeym.site"
 
@@ -21,6 +22,20 @@ export const SEO = {
         height: 630,
         alt: "Nikita Portfolio Preview",
         type: "image/avif"
+      },
+      {
+        url: `${siteUrl}/og-image.webp`,
+        width: 1200,
+        height: 630,
+        alt: "Nikita Portfolio Preview",
+        type: "image/webp"
+      },
+      {
+        url: `${siteUrl}/og-image.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "Nikita Portfolio Preview",
+        type: "image/jpeg"
       }
     ],
     profile: {
@@ -38,9 +53,15 @@ export const SEO = {
     { name: "author", content: "Nikita (@enkeym)" },
     {
       name: "keywords",
-      content: "Nikita, UI/UX, Frontend, React, Canvas, 3D, Portfolio"
+      content:
+        "Nikita, UI/UX, Frontend, React, Next.js, Canvas, 3D, Portfolio, Telegram bots"
     },
-    { property: "og:see_also", content: "https://t.me/enkeym" }
+    { name: "robots", content: "index, follow" },
+    { property: "og:see_also", content: "https://t.me/enkeym" },
+
+    // Мета-теги для верификации
+    { name: "google-site-verification", content: "ваш_код_верификации" },
+    { name: "yandex-verification", content: "ваш_код_верификации" }
   ],
 
   additionalLinkTags: [
@@ -49,5 +70,6 @@ export const SEO = {
     { rel: "manifest", href: "/manifest.json" }
   ],
 
-  additionalJsonLd: [portfolioJsonLd]
+  // Добавляем хлебные крошки
+  additionalJsonLd: [portfolioJsonLd, websiteJsonLd, homepageJsonLd]
 }
