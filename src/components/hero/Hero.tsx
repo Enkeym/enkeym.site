@@ -1,6 +1,5 @@
 "use client"
 
-import { useSmoothScroll } from "@/hooks/useSmoothScroll"
 import { Canvas } from "@react-three/fiber"
 import { motion } from "framer-motion"
 import Image from "next/image"
@@ -63,8 +62,6 @@ const Hero = () => {
     triggerOnce: true,
     rootMargin: "-200px"
   })
-
-  const { scrollToSection } = useSmoothScroll()
 
   return (
     <div className={styles.hero} ref={ref}>
