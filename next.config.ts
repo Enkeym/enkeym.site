@@ -1,14 +1,12 @@
 // next.config.ts
-
 import withBundleAnalyzer from "@next/bundle-analyzer"
+import type { NextConfig } from "next"
 import { createSecureHeaders } from "next-secure-headers"
-import { Configuration as WebpackConfiguration } from "webpack"
-import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer"
 
 const isDev = process.env.NODE_ENV === "development"
 const isAnalyze = process.env.ANALYZE === "true"
 
-// Безопасные заголовки
+// Заголовки безопасности
 const secureHeaders = createSecureHeaders({
   contentSecurityPolicy: {
     directives: {
@@ -40,8 +38,10 @@ const securityHeaders = [
   }
 ]
 
-const baseConfig = {
+// Основная конфигурация
+const baseConfig: NextConfig = {
   reactStrictMode: true,
+  swcMinify: true,
 
   async headers() {
     if (isDev) return []
@@ -51,21 +51,10 @@ const baseConfig = {
         headers: securityHeaders
       }
     ]
-  },
-
-  webpack(config: WebpackConfiguration, { isServer }: { isServer: boolean }) {
-    if (isAnalyze && !isServer) {
-      config.plugins?.push(
-        new BundleAnalyzerPlugin({
-          analyzerMode: "static",
-          reportFilename: "./.next/analyze/client.html"
-        })
-      )
-    }
-    return config
   }
 }
 
+// Оборачиваем с анализатором бандла
 export default withBundleAnalyzer({
   enabled: isAnalyze
 })(baseConfig)
