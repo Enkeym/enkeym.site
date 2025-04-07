@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "postbuild": "next-sitemap",
+    "postbuild": "NODE_ENV=production next-sitemap",
     "lint": "next lint",
     "analyze": "cross-env ANALYZE=true next build",
     "analyze:deadcode": "knip",
