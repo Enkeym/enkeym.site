@@ -10,6 +10,7 @@ const postcssConfig = {
     // Только в production
     isProduction &&
       purgecss({
+        rejected: true,
         content: [
           "./app/**/*.{js,ts,jsx,tsx}",
           "./pages/**/*.{js,ts,jsx,tsx}",

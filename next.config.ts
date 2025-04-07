@@ -41,7 +41,6 @@ const securityHeaders = [
 // Основная конфигурация
 const baseConfig: NextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
 
   async headers() {
     if (isDev) return []
