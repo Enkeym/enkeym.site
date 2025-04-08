@@ -22,15 +22,14 @@ export function useSmoothScroll({
   const isScrolling = useRef<boolean>(false)
   const touchStartY = useRef<number>(0)
   const animationFrameId = useRef<number | null>(null)
-  const scrollTimeout = useRef<NodeJS.Timeout | null>(null)
 
-  // === 1. Захват секций ===
-  const updateSections = useCallback(() => {
-    sectionsRef.current = Array.from(document.querySelectorAll(selector))
-  }, [selector])
-
+  // === [1] Инициализация секций ===
   useEffect(() => {
     if (!enabled) return
+
+    const updateSections = () => {
+      sectionsRef.current = Array.from(document.querySelectorAll(selector))
+    }
 
     updateSections()
 
@@ -38,21 +37,39 @@ export function useSmoothScroll({
     observer.observe(document.body, { childList: true, subtree: true })
 
     return () => observer.disconnect()
-  }, [enabled, updateSections])
+  }, [selector, enabled])
 
-  // === 2. Отмена анимации ===
+  // === [2] Установка текущей секции после перезагрузки ===
+  useEffect(() => {
+    if (!enabled) return
+
+    const setCurrentVisibleSection = () => {
+      const scrollY = window.scrollY || window.pageYOffset
+      const index = sectionsRef.current.findIndex((section) => {
+        const top = section.offsetTop
+        const bottom = top + section.offsetHeight
+        return scrollY >= top && scrollY < bottom
+      })
+
+      if (index !== -1) {
+        currentSectionIndex.current = index
+      }
+    }
+
+    // Ждём появления всех секций
+    const timeout = setTimeout(setCurrentVisibleSection, 300)
+    return () => clearTimeout(timeout)
+  }, [enabled])
+
+  // === [3] Отмена текущей анимации ===
   const cancelScrollAnimation = useCallback(() => {
     if (animationFrameId.current !== null) {
       cancelAnimationFrame(animationFrameId.current)
       animationFrameId.current = null
     }
-    if (scrollTimeout.current !== null) {
-      clearTimeout(scrollTimeout.current)
-      scrollTimeout.current = null
-    }
   }, [])
 
-  // === 3. Анимация скролла ===
+  // === [4] Анимация прокрутки ===
   const smoothScrollTo = useCallback(
     (targetY: number, duration: number) => {
       const startY = window.scrollY || window.pageYOffset
@@ -81,7 +98,7 @@ export function useSmoothScroll({
     [cancelScrollAnimation]
   )
 
-  // === 4. Прокрутка к нужной секции ===
+  // === [5] Прокрутка к секции по индексу ===
   const scrollTo = useCallback(
     (index: number) => {
       if (
@@ -100,43 +117,31 @@ export function useSmoothScroll({
 
       smoothScrollTo(targetY, duration)
 
-      scrollTimeout.current = setTimeout(() => {
+      const release = setTimeout(() => {
         isScrolling.current = false
       }, delay)
+
+      return () => clearTimeout(release)
     },
     [enabled, smoothScrollTo, delay, duration]
   )
 
-  // === 5. Прокрутка по hash после загрузки ===
+  // === [6] Прокрутка по hash (например: /#services) ===
   useEffect(() => {
     if (!enabled) return
 
     const hash = window.location.hash?.replace("#", "")
     if (!hash) return
 
-    const tryScrollToHash = () => {
+    const scrollAfterDelay = setTimeout(() => {
       const index = sectionsRef.current.findIndex((el) => el.id === hash)
-      if (index !== -1) {
-        scrollTo(index)
-        return true
-      }
-      return false
-    }
+      if (index !== -1) scrollTo(index)
+    }, 800)
 
-    // Повторная проверка, если секции загружаются динамически
-    let attempts = 0
-    const interval = setInterval(() => {
-      const success = tryScrollToHash()
-      if (success || attempts >= 20) {
-        clearInterval(interval)
-      }
-      attempts++
-    }, 200)
-
-    return () => clearInterval(interval)
+    return () => clearTimeout(scrollAfterDelay)
   }, [enabled, scrollTo])
 
-  // === 6. Scroll и touch события ===
+  // === [7] События скролла — wheel
   const onWheel = useCallback(
     (e: WheelEvent) => {
       if (!enabled || isScrolling.current) return
@@ -150,6 +155,7 @@ export function useSmoothScroll({
     [enabled, scrollTo]
   )
 
+  // === [8] Touch для мобильных ===
   const onTouchStart = useCallback((e: TouchEvent) => {
     touchStartY.current = e.touches[0].clientY
   }, [])
@@ -165,7 +171,7 @@ export function useSmoothScroll({
     [enabled, scrollTo]
   )
 
-  // === 7. Подписка ===
+  // === [9] Подписка на события ===
   useEffect(() => {
     if (!enabled) return
 
@@ -181,7 +187,7 @@ export function useSmoothScroll({
     }
   }, [enabled, onWheel, onTouchStart, onTouchEnd, cancelScrollAnimation])
 
-  // === 8. API ===
+  // === [10] Публичный API ===
   return {
     scrollToSection: (index: number) => scrollTo(index),
     getCurrentSectionIndex: () => currentSectionIndex.current
