@@ -163,7 +163,6 @@ export const siteMetadata: Metadata = {
     yandex: "ae4421aecc9156f0"
   },
 
-  themeColor: "#12071f",
   creator: "Nikita Korolev",
   publisher: "Nikita, freelance",
   applicationName: "Nikita Portfolio"

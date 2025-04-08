@@ -1,10 +1,10 @@
 "use client"
 
 import { motion } from "framer-motion"
-import dynamic from "next/dynamic"
 import Image from "next/image"
 import { useState } from "react"
 import { useInView } from "react-intersection-observer"
+import ModelCanvasSwitcher from "./ModelCanvasSwitcher"
 import styles from "./services.module.css"
 
 const textVariants = {
@@ -53,19 +53,6 @@ const services: Service[] = [
     desc: "Web UI (лендинги, SPA, e-commerce), Дизайн админок и дашбордов, Адаптивный и интерактивный дизайн"
   }
 ]
-
-const ComputerModelContainer = dynamic(
-  () => import("./computer/ComputerModelContainer"),
-  { ssr: false, loading: () => <div>Загрузка модели...</div> }
-)
-const ConsoleModelContainer = dynamic(
-  () => import("./console/ConsoleModelContainer"),
-  { ssr: false, loading: () => <div>Загрузка модели...</div> }
-)
-const MugModelContainer = dynamic(() => import("./mug/MugModelContainer"), {
-  ssr: false,
-  loading: () => <div>Загрузка модели...</div>
-})
 
 const Services = () => {
   const [currentServiceId, setCurrentServiceId] = useState<number>(1)
@@ -123,13 +110,9 @@ const Services = () => {
       </div>
 
       <div className={`${styles.sSection} ${styles.right}`}>
-        {currentServiceId === 1 ? (
-          <ComputerModelContainer />
-        ) : currentServiceId === 2 ? (
-          <ConsoleModelContainer />
-        ) : (
-          <MugModelContainer />
-        )}
+        <div className={`${styles.sSection} ${styles.right}`}>
+          <ModelCanvasSwitcher id={currentServiceId} />
+        </div>
       </div>
     </div>
   )

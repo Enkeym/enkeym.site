@@ -1,6 +1,6 @@
 "use client"
 
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei"
+import { Html, OrbitControls, PerspectiveCamera } from "@react-three/drei"
 import { Canvas } from "@react-three/fiber"
 import { ReactNode, Suspense } from "react"
 
@@ -21,10 +21,22 @@ const ModelCanvas = ({
     <Canvas
       frameloop="demand"
       dpr={glScale}
-      gl={{ antialias: false, powerPreference: "high-performance" }}
       camera={{ fov: 35 }}
+      gl={{ antialias: false, powerPreference: "high-performance" }}
+      onCreated={({ gl }) => {
+        gl.domElement.addEventListener("contextlost", (e) => {
+          e.preventDefault()
+          console.warn("WebGL context lost — prevented freeze")
+        })
+      }}
     >
-      <Suspense fallback={<span className="loading">Загрузка модели...</span>}>
+      <Suspense
+        fallback={
+          <Html center>
+            <span className="loading">Загрузка модели...</span>
+          </Html>
+        }
+      >
         <ambientLight intensity={2} />
         <directionalLight position={[2, 2, 2]} intensity={2} />
 

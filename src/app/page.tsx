@@ -27,8 +27,9 @@ const sections: SectionItem[] = [
 export default function HomePage() {
   useSmoothScroll({
     selector: "main > section",
-    duration: 1000,
-    delay: 1500
+    duration: 1200,
+    delay: 800,
+    enabled: true
   })
 
   return (
@@ -51,13 +52,15 @@ function LazySection({ id, Component }: LazySectionProps) {
 
   return (
     <section ref={ref} id={id}>
-      {isInView ? (
-        <Suspense fallback={<div>Загрузка секции {id}...</div>}>
-          <Component />
+      <div style={{ height: "100vh", width: "100%" }}>
+        <Suspense
+          fallback={
+            <div style={{ height: "100vh" }}>Загрузка секции {id}...</div>
+          }
+        >
+          {isInView && <Component />}
         </Suspense>
-      ) : (
-        <div style={{ height: 500 }}>Загрузка секции {id}...</div>
-      )}
+      </div>
     </section>
   )
 }
