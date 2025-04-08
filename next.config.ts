@@ -18,8 +18,7 @@ const secureHeaders = createSecureHeaders({
       fontSrc: ["'self'"],
       objectSrc: ["'none'"]
     }
-  },
-  referrerPolicy: "strict-origin-when-cross-origin"
+  }
 })
 
 const securityHeaders = [
@@ -36,7 +35,6 @@ const baseConfig: NextConfig = {
   output: "export",
 
   images: {
-    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
@@ -59,6 +57,15 @@ const baseConfig: NextConfig = {
       {
         source: "/(.*)",
         headers: securityHeaders
+      },
+      {
+        source: "/:all*(svg|avif|jpg|jpeg|png|webp|wasm)",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=31536000, immutable"
+          }
+        ]
       }
     ]
   }

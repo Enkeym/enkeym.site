@@ -266,9 +266,9 @@ const Hero = () => {
             src="/man.avif"
             alt="Главный персонаж"
             fill
-            className={styles.heroImage}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
             priority
+            quality={80}
+            sizes="(max-width: 768px) 100vw, 50vw"
           />
         </div>
       </div>
