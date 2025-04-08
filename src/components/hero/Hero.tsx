@@ -269,6 +269,7 @@ const Hero = () => {
             priority
             quality={80}
             sizes="(max-width: 768px) 100vw, 50vw"
+            className={styles.heroImage}
           />
         </div>
       </div>

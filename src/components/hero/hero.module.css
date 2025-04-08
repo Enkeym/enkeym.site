@@ -17,7 +17,7 @@
 }
 
 .hImg {
-  bottom: var(--spacing-xl);
+  bottom: var(--spacing-2xl);
   height: clamp(200px, 40vw, 400px);
   left: 0;
   margin: auto;
