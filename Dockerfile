@@ -2,19 +2,22 @@
 FROM node:20-alpine AS builder
 WORKDIR /app
 
-# Аргумент сборки (build-time variable)
-ARG NEXT_PUBLIC_TURNSTILE_SITE_KEY
+# Копируем файл окружения
+COPY .env .env
 
-# Установи переменную окружения из аргумента
-ENV NEXT_PUBLIC_TURNSTILE_SITE_KEY=$NEXT_PUBLIC_TURNSTILE_SITE_KEY
+# Загружаем переменные окружения из .env напрямую в ENV
+# Важно: только для простых значений (без кавычек, пробелов и специальных символов)
+ENV $(cat .env | xargs)
 
 COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
 COPY . .
+
+# Сборка проекта (переменные уже загружены)
 RUN yarn build
 
-# Остальная часть Dockerfile без изменений...
+# 2. Сборка nginx с Brotli
 FROM alpine:3.17 AS build-nginx
 
 RUN apk add --no-cache \
@@ -51,7 +54,7 @@ RUN ./configure \
     --with-http_stub_status_module \
   && make -j$(nproc) && make install
 
-# Финальный production-образ (без изменений)
+# 3. Финальный production-образ
 FROM alpine:3.17 AS production
 
 COPY --from=build-nginx /usr/local/nginx /usr/local/nginx
