@@ -4,3 +4,12 @@ Dockerfile
 README.md
 *.log
 .next/cache
+node_modules
+.next
+out
+*.log
+*.tgz
+.cache
+.vscode
+.env
+public/og-image*

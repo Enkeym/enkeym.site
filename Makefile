@@ -11,6 +11,8 @@ clean:
 
 # Собрать образ
 build:
+  sudo docker system prune -af --volumes
+  sudo docker build -t enkeym-app .
 	sudo docker build -t $(NAME) .
 
 # Запустить контейнер без SSL (порт 80 → 3000)
