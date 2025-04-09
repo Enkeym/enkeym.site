@@ -78,18 +78,16 @@ const Hero = () => {
     <div className={styles.hero} ref={ref}>
       <div className={styles.bg}>
         {/* Пена */}
-        <div className={styles.foamOverlay}>
-          <Image
-            src="/foam.avif"
-            alt="Пена"
-            fill
-            priority
-            fetchPriority="high"
-            sizes="100vw"
-            quality={60}
-            className={styles.foamImage}
-          />
-        </div>
+        <Image
+          src="/foam.avif"
+          alt="Пена"
+          fill
+          priority
+          fetchPriority="high"
+          sizes="(max-width: 768px) 100vw, 50vw"
+          quality={60}
+          className={styles.foamImage}
+        />
 
         {/* Главный персонаж */}
         <div className={styles.hImg}>
@@ -108,8 +106,6 @@ const Hero = () => {
         {/* Canvas отложенно — рендерим, только если в зоне видимости */}
         {inView && (
           <Canvas
-            // Если есть постоянная анимация, оставь frameloop="always"
-            // но если нужен рендер "на требование", можно frameloop="demand"
             frameloop="always"
             dpr={[1, 1.5]}
             shadows={false}
