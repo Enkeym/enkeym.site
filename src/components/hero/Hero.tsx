@@ -2,13 +2,18 @@
 
 import { Canvas } from "@react-three/fiber"
 import { motion } from "framer-motion"
+import dynamic from "next/dynamic"
 import Image from "next/image"
 import Link from "next/link"
 import { Suspense } from "react"
 import { useInView } from "react-intersection-observer"
 import styles from "./hero.module.css"
-import Shape from "./Shape"
 import Speech from "./Speech"
+
+const Shape = dynamic(() => import("./Shape"), {
+  ssr: false,
+  loading: () => <></>
+})
 
 const awardVariants = {
   initial: { x: -100, opacity: 0 },
@@ -37,12 +42,7 @@ const followVariants = {
   }
 }
 
-type Platform = {
-  name: string
-  href: string
-}
-
-const platforms: Platform[] = [
+const platforms = [
   {
     name: "telegram",
     href: "https://t.me/NikitaKorolev96"
@@ -51,12 +51,8 @@ const platforms: Platform[] = [
 
 const handleScrollToContact = (e: React.MouseEvent<HTMLAnchorElement>) => {
   e.preventDefault()
-  const hash = e.currentTarget.hash
-  const section = hash.replace("#", "")
-  const target = document.getElementById(section)
-  if (target) {
-    target.scrollIntoView({ behavior: "smooth" })
-  }
+  const target = document.getElementById(e.currentTarget.hash.replace("#", ""))
+  if (target) target.scrollIntoView({ behavior: "smooth" })
 }
 
 const Hero = () => {
@@ -67,6 +63,47 @@ const Hero = () => {
 
   return (
     <div className={styles.hero} ref={ref}>
+      <div className={styles.bg}>
+        <div className={styles.foamOverlay}>
+          <Image
+            src="/foam.avif"
+            alt="Пена"
+            fill
+            priority
+            fetchPriority="high"
+            sizes="100vw"
+            quality={60}
+            className={styles.foamImage}
+          />
+        </div>
+
+        <div className={styles.hImg}>
+          <Image
+            src="/man.avif"
+            alt="Главный персонаж"
+            fill
+            priority
+            fetchPriority="high"
+            quality={80}
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className={styles.heroImage}
+          />
+        </div>
+
+        {/* Canvas отложенно */}
+        {inView && (
+          <Canvas
+            frameloop="always"
+            dpr={[1, 1.5]}
+            gl={{ antialias: false, powerPreference: "high-performance" }}
+          >
+            <Suspense fallback={null}>
+              <Shape />
+            </Suspense>
+          </Canvas>
+        )}
+      </div>
+
       {/* Левая секция */}
       <div className={`${styles.hSection} ${styles.left}`}>
         <motion.h1
@@ -238,43 +275,6 @@ const Hero = () => {
             </div>
           </motion.div>
         </a>
-      </div>
-
-      {/* Фон + Canvas + пена + персонаж */}
-      <div className={styles.bg}>
-        <Canvas
-          frameloop="always"
-          dpr={[1, 1.5]}
-          gl={{ antialias: false, powerPreference: "high-performance" }}
-        >
-          <Suspense
-            fallback={<span className="loading">Загрузка модели...</span>}
-          >
-            <Shape />
-          </Suspense>
-        </Canvas>
-
-        <div className={styles.foamOverlay}>
-          <Image
-            src="/foam.avif"
-            alt="Пена"
-            fill
-            priority
-            className={styles.foamImage}
-          />
-        </div>
-
-        <div className={styles.hImg}>
-          <Image
-            src="/man.avif"
-            alt="Главный персонаж"
-            fill
-            priority
-            quality={80}
-            sizes="(max-width: 768px) 100vw, 50vw"
-            className={styles.heroImage}
-          />
-        </div>
       </div>
     </div>
   )
