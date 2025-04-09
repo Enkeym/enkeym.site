@@ -1,4 +1,4 @@
-// lib/siteMetadata.ts
+// lib/metadata.ts
 import type { Metadata } from "next"
 
 export const siteUrl = "https://enkeym.site"
