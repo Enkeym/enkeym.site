@@ -43,7 +43,6 @@ RUN ./configure \
     --without-http_uwsgi_module \
     --without-http_fastcgi_module \
     --with-http_stub_status_module \
-    --with-debug \
   && make -j$(nproc) && make install
 
 # 3. Финальный production-образ
@@ -71,6 +70,9 @@ RUN find /usr/share/nginx/html -type f \( -name "*.js" -o -name "*.css" -o -name
   done
 
 RUN strip /usr/sbin/nginx || true
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
+  CMD wget -q --spider http://localhost || exit 1
 
 EXPOSE 80 443
 CMD ["nginx", "-g", "daemon off;"]

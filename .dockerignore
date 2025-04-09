@@ -1,11 +1,11 @@
+# Уже, судя по твоему примеру, но на всякий случай:
 node_modules
 .next
-.cache
 out
-_.log
-_.tgz
-Dockerfile
 .dockerignore
+Dockerfile
+*.log
+.cache
+*.tgz
 .vscode
 .env
-.DS_Store
