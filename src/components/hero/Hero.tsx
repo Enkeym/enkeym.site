@@ -1,29 +1,14 @@
 "use client"
 
 import { Canvas } from "@react-three/fiber"
-// Предположим, что настроен modularizeImports для framer-motion,
-// иначе можно оставить import { motion, useInView } from "framer-motion"
 import { motion } from "framer-motion"
-import dynamic from "next/dynamic"
 import Image from "next/image"
 import Link from "next/link"
 import { Suspense } from "react"
-import { useInView } from "react-intersection-observer"
 import styles from "./hero.module.css"
+import Shape from "./Shape"
+import Speech from "./Speech"
 
-// Динамический импорт Shape
-const Shape = dynamic(() => import("./Shape"), {
-  ssr: false,
-  loading: () => null
-})
-
-// Динамический импорт Speech (чтобы бандл Hero был меньше)
-const DynamicSpeech = dynamic(() => import("./Speech"), {
-  ssr: false,
-  loading: () => null
-})
-
-// Анимационные варианты
 const awardVariants = {
   initial: { x: -100, opacity: 0 },
   animate: {
@@ -51,78 +36,26 @@ const followVariants = {
   }
 }
 
-// Соц. платформы
-const platforms = [
+type platform = {
+  name: string
+  href: string
+}
+
+const platforms: platform[] = [
   {
     name: "telegram",
     href: "https://t.me/NikitaKorolev96"
   }
 ]
 
-// Хэндлер прокрутки по якорю
-const handleScrollToContact = (e: React.MouseEvent<HTMLAnchorElement>) => {
-  e.preventDefault()
-  const target = document.getElementById(e.currentTarget.hash.replace("#", ""))
-  if (target) {
-    target.scrollIntoView({ behavior: "smooth" })
-  }
-}
-
 const Hero = () => {
-  const { ref, inView } = useInView({
-    triggerOnce: true,
-    rootMargin: "-200px"
-  })
-
   return (
-    <div className={styles.hero} ref={ref}>
-      <div className={styles.bg}>
-        {/* Пена */}
-        <Image
-          src="/foam.avif"
-          alt="Пена"
-          fill
-          priority
-          fetchPriority="high"
-          sizes="(max-width: 768px) 100vw, 50vw"
-          quality={60}
-          className={styles.foamImage}
-        />
-
-        {/* Главный персонаж */}
-        <div className={styles.hImg}>
-          <Image
-            src="/man.avif"
-            alt="Главный персонаж"
-            fill
-            priority
-            fetchPriority="high"
-            quality={80}
-            sizes="(max-width: 768px) 100vw, 50vw"
-            className={styles.heroImage}
-          />
-        </div>
-
-        {/* Canvas отложенно — рендерим, только если в зоне видимости */}
-        {inView && (
-          <Canvas
-            frameloop="always"
-            dpr={[1, 1.5]}
-            shadows={false}
-            gl={{ antialias: false, powerPreference: "high-performance" }}
-          >
-            <Suspense fallback={null}>
-              <Shape />
-            </Suspense>
-          </Canvas>
-        )}
-      </div>
-
+    <div className={styles.hero}>
       {/* Левая секция */}
       <div className={`${styles.hSection} ${styles.left}`}>
         <motion.h1
           initial={{ y: -100, opacity: 0 }}
-          animate={inView ? { y: 0, opacity: 1 } : {}}
+          animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 1 }}
           className={styles.hTitle}
         >
@@ -134,7 +67,7 @@ const Hero = () => {
         <motion.div
           variants={awardVariants}
           initial="initial"
-          animate={inView ? "animate" : "initial"}
+          animate="animate"
           className={styles.awards}
         >
           <motion.h2 variants={awardVariants}>Fullstack разработчик</motion.h2>
@@ -146,14 +79,13 @@ const Hero = () => {
           <motion.div variants={awardVariants} className={styles.awardList}>
             {["html", "css", "js", "ts", "react", "next", "gpt"].map(
               (src, i) => (
-                <motion.div key={src} variants={awardVariants}>
+                <motion.div key={i} variants={awardVariants}>
                   <Image
                     src={`/${src}.svg`}
                     alt={`Награда ${i + 1}`}
                     width={38}
                     height={38}
                     className={styles.awardListImage}
-                    loading="lazy"
                   />
                 </motion.div>
               )
@@ -165,18 +97,16 @@ const Hero = () => {
           href="#services"
           className={styles.scroll}
           aria-label="Прокрутить к услугам"
-          onClick={handleScrollToContact}
         >
           <motion.div
             animate={{ y: [0, 5], opacity: [0, 1, 0] }}
             transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
           >
-            <svg width="100" height="100" viewBox="0 0 24 24">
+            <svg width="100" height="100" viewBox="0 0 24 24" fill="none">
               <path
                 d="M5 9C5 5.13401 8.13401 2 12 2C15.866 2 19 5.13401 19 9V15C19 18.866 15.866 22 12 22C8.13401 22 5 18.866 5 15V9Z"
                 stroke="#12071f"
                 strokeWidth="1"
-                fill="none"
               />
               <motion.path
                 animate={{ y: [0, 5] }}
@@ -189,7 +119,6 @@ const Hero = () => {
                 stroke="#12071f"
                 strokeWidth="1"
                 strokeLinecap="round"
-                fill="none"
               />
             </svg>
           </motion.div>
@@ -201,7 +130,7 @@ const Hero = () => {
         <motion.div
           variants={followVariants}
           initial="initial"
-          animate={inView ? "animate" : "initial"}
+          animate="animate"
           className={styles.follow}
         >
           {platforms.map(({ name, href }) => (
@@ -217,7 +146,6 @@ const Hero = () => {
                 width={20}
                 height={20}
                 className={styles.followImg}
-                loading="lazy"
               />
             </Link>
           ))}
@@ -226,13 +154,12 @@ const Hero = () => {
           </div>
         </motion.div>
 
-        {/* Вместо <Speech /> напрямую, используем динамический импорт */}
-        <DynamicSpeech />
+        <Speech />
 
         <motion.div
           variants={certificateVariants}
           initial="initial"
-          animate={inView ? "animate" : "initial"}
+          animate="animate"
           className={styles.certificate}
         >
           <Image
@@ -240,20 +167,18 @@ const Hero = () => {
             alt="Сертификат"
             width={70}
             height={70}
-            loading="lazy"
           />
           ПРОДУМАННЫЙ UX
           <br />
           ЧИСТЫЙ КОД
           <br />
-          ДОСТУПНОСТЬ A11Y
+          ДОСТУПНОСТЬ А11Y
         </motion.div>
 
-        <a
-          href="#contact"
+        <Link
+          href="/#contact"
           className={styles.contactLink}
           aria-label="Связаться со мной"
-          onClick={handleScrollToContact}
         >
           <motion.div
             className={styles.contactButton}
@@ -291,7 +216,37 @@ const Hero = () => {
               </svg>
             </div>
           </motion.div>
-        </a>
+        </Link>
+      </div>
+
+      {/* Фон и пена */}
+      <div className={styles.bg}>
+        <Canvas>
+          <Suspense fallback={null}>
+            <Shape />
+          </Suspense>
+        </Canvas>
+
+        <div className={styles.foamOverlay}>
+          <Image
+            src="/foam.avif"
+            alt="Пена"
+            fill
+            priority
+            className={styles.foamImage}
+          />
+        </div>
+
+        <div className={styles.hImg}>
+          <Image
+            src="/man.avif"
+            alt="Главный персонаж"
+            fill
+            className={styles.heroImage}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
+            priority
+          />
+        </div>
       </div>
     </div>
   )
