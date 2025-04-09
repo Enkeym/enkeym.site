@@ -1,6 +1,7 @@
 "use client"
 
 import dynamic from "next/dynamic"
+import Head from "next/head"
 import React, { Suspense, useCallback, useRef } from "react"
 import { useInView } from "react-intersection-observer"
 
@@ -25,11 +26,18 @@ const sections: SectionItem[] = [
 
 export default function HomePage() {
   return (
-    <main>
-      {sections.map(({ id, component }) => (
-        <LazySection key={id} id={id} Component={component} />
-      ))}
-    </main>
+    <>
+      <Head>
+        <link rel="preload" href="/man.avif" as="image" fetchPriority="high" />
+        <link rel="preload" href="/foam.avif" as="image" fetchPriority="high" />
+      </Head>
+
+      <main>
+        {sections.map(({ id, component }) => (
+          <LazySection key={id} id={id} Component={component} />
+        ))}
+      </main>
+    </>
   )
 }
 
@@ -56,7 +64,6 @@ type LazySectionProps = {
 function LazySection({ id, Component }: LazySectionProps) {
   const ref = useRef<HTMLDivElement | null>(null)
 
-  // Инициализируем Intersection Observer
   const { ref: inViewRef, inView } = useInView({
     triggerOnce: true,
     rootMargin: "-200px"

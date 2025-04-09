@@ -2,12 +2,14 @@
 
 import { Canvas } from "@react-three/fiber"
 import { motion } from "framer-motion"
+import dynamic from "next/dynamic"
 import Image from "next/image"
 import Link from "next/link"
-import { Suspense } from "react"
+import { Suspense, useEffect, useState } from "react"
 import styles from "./hero.module.css"
 import Shape from "./Shape"
-import Speech from "./Speech"
+
+const Speech = dynamic(() => import("./Speech"), { ssr: false })
 
 const awardVariants = {
   initial: { x: -100, opacity: 0 },
@@ -36,12 +38,7 @@ const followVariants = {
   }
 }
 
-type platform = {
-  name: string
-  href: string
-}
-
-const platforms: platform[] = [
+const platforms = [
   {
     name: "telegram",
     href: "https://t.me/NikitaKorolev96"
@@ -49,6 +46,15 @@ const platforms: platform[] = [
 ]
 
 const Hero = () => {
+  const [showCanvas, setShowCanvas] = useState(false)
+
+  useEffect(() => {
+    const onLoad = () => setShowCanvas(true)
+    if (document.readyState === "complete") onLoad()
+    else window.addEventListener("load", onLoad)
+    return () => window.removeEventListener("load", onLoad)
+  }, [])
+
   return (
     <div className={styles.hero}>
       {/* Левая секция */}
@@ -172,7 +178,7 @@ const Hero = () => {
           <br />
           ЧИСТЫЙ КОД
           <br />
-          ДОСТУПНОСТЬ А11Y
+          ДОСТУПНОСТЬ A11Y
         </motion.div>
 
         <Link
@@ -221,19 +227,23 @@ const Hero = () => {
 
       {/* Фон и пена */}
       <div className={styles.bg}>
-        <Canvas>
-          <Suspense fallback={null}>
-            <Shape />
-          </Suspense>
-        </Canvas>
+        {showCanvas && (
+          <Canvas>
+            <Suspense fallback={null}>
+              <Shape />
+            </Suspense>
+          </Canvas>
+        )}
 
         <div className={styles.foamOverlay}>
           <Image
             src="/foam.avif"
             alt="Пена"
-            fill
+            width={1200}
+            height={800}
             priority
             className={styles.foamImage}
+            sizes="100vw"
           />
         </div>
 
@@ -241,10 +251,11 @@ const Hero = () => {
           <Image
             src="/man.avif"
             alt="Главный персонаж"
-            fill
-            className={styles.heroImage}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px"
+            width={400}
+            height={600}
             priority
+            className={styles.heroImage}
+            sizes="(max-width: 768px) 100vw, 50vw"
           />
         </div>
       </div>
