@@ -1,21 +1,15 @@
 "use client"
 
-import SectionLoader from "@/components/ui/SectionLoader"
 import { useInView } from "framer-motion"
 import dynamic from "next/dynamic"
 import { ComponentType, Suspense, useRef } from "react"
 
-const Hero = dynamic(() => import("@/components/hero/Hero"), {
-  ssr: false,
-  loading: () => <SectionLoader />
-})
+const Hero = dynamic(() => import("@/components/hero/Hero"), { ssr: false })
 const Services = dynamic(() => import("@/components/services/Services"), {
-  ssr: false,
-  loading: () => <SectionLoader />
+  ssr: false
 })
 const Contact = dynamic(() => import("@/components/contact/Contact"), {
-  ssr: false,
-  loading: () => <SectionLoader />
+  ssr: false
 })
 
 type SectionItem = {

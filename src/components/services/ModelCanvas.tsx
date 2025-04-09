@@ -22,7 +22,7 @@ const ModelCanvas = ({
       frameloop="demand"
       dpr={glScale}
       camera={{ fov: 35 }}
-      gl={{ antialias: false, powerPreference: "high-performance" }}
+      gl={{ antialias: false, powerPreference: "default" }}
       onCreated={({ gl }) => {
         gl.domElement.addEventListener("contextlost", (e) => {
           e.preventDefault()

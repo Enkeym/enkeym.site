@@ -162,7 +162,7 @@ const Contact = () => {
           <motion.div variants={listVariant} className={styles.submitRow}>
             <div className={styles.turnstileWrapper}>
               <Turnstile
-                sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY || ""}
+                sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
                 onSuccess={(token) => setToken(token)}
                 onExpire={() => setToken(null)}
                 theme="light"

@@ -1,4 +1,3 @@
-//next-sitemap.config.js
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
   siteUrl: "https://enkeym.site",
@@ -8,7 +7,7 @@ module.exports = {
   priority: 0.7,
   sitemapSize: 5000,
   exclude: ["/404", "/_not-found"],
-  outDir: "./out",
+  outDir: "./public",
   alternateRefs: [
     {
       href: "https://enkeym.site",
