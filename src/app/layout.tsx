@@ -13,7 +13,6 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <head>
-        {/* Базовые мета-теги */}
         <meta charSet="UTF-8" />
         <meta
           name="viewport"

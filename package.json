@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbo",
-    "build": "next build --profile",
+    "build": "next build && yarn postbuild",
     "postbuild": "cross-env NODE_ENV=production next-sitemap",
     "start": "next start",
     "lint": "next lint",
