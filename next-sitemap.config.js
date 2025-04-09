@@ -7,7 +7,7 @@ module.exports = {
   priority: 0.7,
   sitemapSize: 5000,
   exclude: ["/404", "/_not-found"],
-  outDir: "./public",
+  outDir: "./out",
   alternateRefs: [
     {
       href: "https://enkeym.site",

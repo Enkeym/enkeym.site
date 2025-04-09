@@ -1,8 +1,8 @@
 "use client"
 
-import { useInView } from "framer-motion"
 import dynamic from "next/dynamic"
-import { ComponentType, Suspense, useRef } from "react"
+import React, { Suspense, useCallback, useRef } from "react"
+import { useInView } from "react-intersection-observer"
 
 const Hero = dynamic(() => import("@/components/hero/Hero"), { ssr: false })
 const Services = dynamic(() => import("@/components/services/Services"), {
@@ -14,7 +14,7 @@ const Contact = dynamic(() => import("@/components/contact/Contact"), {
 
 type SectionItem = {
   id: string
-  component: ComponentType
+  component: React.ComponentType
 }
 
 const sections: SectionItem[] = [
@@ -33,26 +33,48 @@ export default function HomePage() {
   )
 }
 
+function SectionFallback({ id }: { id: string }) {
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center"
+      }}
+    >
+      Загрузка секции {id}...
+    </div>
+  )
+}
+
 type LazySectionProps = {
   id: string
-  Component: ComponentType
+  Component: React.ComponentType
 }
 
 function LazySection({ id, Component }: LazySectionProps) {
-  const ref = useRef<HTMLDivElement>(null)
-  const isInView = useInView(ref, { margin: "-200px" })
+  const ref = useRef<HTMLDivElement | null>(null)
+
+  // Инициализируем Intersection Observer
+  const { ref: inViewRef, inView } = useInView({
+    triggerOnce: true,
+    rootMargin: "-200px"
+  })
+
+  const setRefs = useCallback(
+    (node: HTMLDivElement) => {
+      ref.current = node
+      inViewRef(node)
+    },
+    [inViewRef]
+  )
 
   return (
-    <section ref={ref} id={id}>
-      <div style={{ height: "100vh", width: "100%" }}>
-        <Suspense
-          fallback={
-            <div style={{ height: "100vh" }}>Загрузка секции {id}...</div>
-          }
-        >
-          {isInView && <Component />}
-        </Suspense>
-      </div>
+    <section ref={setRefs} id={id}>
+      <Suspense fallback={<SectionFallback id={id} />}>
+        {inView && <Component />}
+      </Suspense>
     </section>
   )
 }

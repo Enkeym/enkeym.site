@@ -1,6 +1,8 @@
 "use client"
 
 import { Canvas } from "@react-three/fiber"
+// Предположим, что настроен modularizeImports для framer-motion,
+// иначе можно оставить import { motion, useInView } from "framer-motion"
 import { motion } from "framer-motion"
 import dynamic from "next/dynamic"
 import Image from "next/image"
@@ -8,13 +10,20 @@ import Link from "next/link"
 import { Suspense } from "react"
 import { useInView } from "react-intersection-observer"
 import styles from "./hero.module.css"
-import Speech from "./Speech"
 
+// Динамический импорт Shape
 const Shape = dynamic(() => import("./Shape"), {
   ssr: false,
-  loading: () => <></>
+  loading: () => null
 })
 
+// Динамический импорт Speech (чтобы бандл Hero был меньше)
+const DynamicSpeech = dynamic(() => import("./Speech"), {
+  ssr: false,
+  loading: () => null
+})
+
+// Анимационные варианты
 const awardVariants = {
   initial: { x: -100, opacity: 0 },
   animate: {
@@ -42,6 +51,7 @@ const followVariants = {
   }
 }
 
+// Соц. платформы
 const platforms = [
   {
     name: "telegram",
@@ -49,10 +59,13 @@ const platforms = [
   }
 ]
 
+// Хэндлер прокрутки по якорю
 const handleScrollToContact = (e: React.MouseEvent<HTMLAnchorElement>) => {
   e.preventDefault()
   const target = document.getElementById(e.currentTarget.hash.replace("#", ""))
-  if (target) target.scrollIntoView({ behavior: "smooth" })
+  if (target) {
+    target.scrollIntoView({ behavior: "smooth" })
+  }
 }
 
 const Hero = () => {
@@ -64,6 +77,7 @@ const Hero = () => {
   return (
     <div className={styles.hero} ref={ref}>
       <div className={styles.bg}>
+        {/* Пена */}
         <div className={styles.foamOverlay}>
           <Image
             src="/foam.avif"
@@ -77,6 +91,7 @@ const Hero = () => {
           />
         </div>
 
+        {/* Главный персонаж */}
         <div className={styles.hImg}>
           <Image
             src="/man.avif"
@@ -90,11 +105,14 @@ const Hero = () => {
           />
         </div>
 
-        {/* Canvas отложенно */}
+        {/* Canvas отложенно — рендерим, только если в зоне видимости */}
         {inView && (
           <Canvas
+            // Если есть постоянная анимация, оставь frameloop="always"
+            // но если нужен рендер "на требование", можно frameloop="demand"
             frameloop="always"
             dpr={[1, 1.5]}
+            shadows={false}
             gl={{ antialias: false, powerPreference: "high-performance" }}
           >
             <Suspense fallback={null}>
@@ -132,7 +150,7 @@ const Hero = () => {
           <motion.div variants={awardVariants} className={styles.awardList}>
             {["html", "css", "js", "ts", "react", "next", "gpt"].map(
               (src, i) => (
-                <motion.div key={i} variants={awardVariants}>
+                <motion.div key={src} variants={awardVariants}>
                   <Image
                     src={`/${src}.svg`}
                     alt={`Награда ${i + 1}`}
@@ -157,11 +175,12 @@ const Hero = () => {
             animate={{ y: [0, 5], opacity: [0, 1, 0] }}
             transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
           >
-            <svg width="100" height="100" viewBox="0 0 24 24" fill="none">
+            <svg width="100" height="100" viewBox="0 0 24 24">
               <path
                 d="M5 9C5 5.13401 8.13401 2 12 2C15.866 2 19 5.13401 19 9V15C19 18.866 15.866 22 12 22C8.13401 22 5 18.866 5 15V9Z"
                 stroke="#12071f"
                 strokeWidth="1"
+                fill="none"
               />
               <motion.path
                 animate={{ y: [0, 5] }}
@@ -174,6 +193,7 @@ const Hero = () => {
                 stroke="#12071f"
                 strokeWidth="1"
                 strokeLinecap="round"
+                fill="none"
               />
             </svg>
           </motion.div>
@@ -210,7 +230,8 @@ const Hero = () => {
           </div>
         </motion.div>
 
-        <Speech />
+        {/* Вместо <Speech /> напрямую, используем динамический импорт */}
+        <DynamicSpeech />
 
         <motion.div
           variants={certificateVariants}

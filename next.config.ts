@@ -33,6 +33,7 @@ const baseConfig: NextConfig = {
   reactStrictMode: true,
   compress: true,
   output: "export",
+  swcMinify: true,
 
   images: {
     unoptimized: true,
@@ -46,9 +47,11 @@ const baseConfig: NextConfig = {
   },
 
   modularizeImports: {
+    "framer-motion": {
+      transform: "framer-motion/dist/es/{{member}}"
+    },
     three: {
-      transform: "three/src/{{member}}",
-      skipDefaultConversion: true
+      transform: "three/src/{{member}}"
     }
   },
 
