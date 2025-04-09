@@ -200,7 +200,7 @@ const Contact = () => {
         </motion.form>
       </div>
 
-      <div className={styles.cSection}>
+      <div className={`${styles.cSectionRight}`}>
         <ContactSvg />
       </div>
     </div>

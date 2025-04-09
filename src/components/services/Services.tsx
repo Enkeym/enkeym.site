@@ -110,9 +110,7 @@ const Services = () => {
       </div>
 
       <div className={`${styles.sSection} ${styles.right}`}>
-        <div className={`${styles.sSection} ${styles.right}`}>
-          <ModelCanvasSwitcher id={currentServiceId} />
-        </div>
+        <ModelCanvasSwitcher id={currentServiceId} />
       </div>
     </div>
   )

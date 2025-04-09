@@ -51,7 +51,9 @@ const platforms: Platform[] = [
 
 const handleScrollToContact = (e: React.MouseEvent<HTMLAnchorElement>) => {
   e.preventDefault()
-  const target = document.getElementById("contact")
+  const hash = e.currentTarget.hash
+  const section = hash.replace("#", "")
+  const target = document.getElementById(section)
   if (target) {
     target.scrollIntoView({ behavior: "smooth" })
   }
@@ -112,6 +114,7 @@ const Hero = () => {
           href="#services"
           className={styles.scroll}
           aria-label="Прокрутить к услугам"
+          onClick={handleScrollToContact}
         >
           <motion.div
             animate={{ y: [0, 5], opacity: [0, 1, 0] }}

@@ -1,16 +1,21 @@
 "use client"
 
-import { useSmoothScroll } from "@/hooks/useSmoothScroll"
+import SectionLoader from "@/components/ui/SectionLoader"
 import { useInView } from "framer-motion"
 import dynamic from "next/dynamic"
 import { ComponentType, Suspense, useRef } from "react"
 
-const Hero = dynamic(() => import("@/components/hero/Hero"), { ssr: false })
+const Hero = dynamic(() => import("@/components/hero/Hero"), {
+  ssr: false,
+  loading: () => <SectionLoader />
+})
 const Services = dynamic(() => import("@/components/services/Services"), {
-  ssr: false
+  ssr: false,
+  loading: () => <SectionLoader />
 })
 const Contact = dynamic(() => import("@/components/contact/Contact"), {
-  ssr: false
+  ssr: false,
+  loading: () => <SectionLoader />
 })
 
 type SectionItem = {
@@ -25,13 +30,6 @@ const sections: SectionItem[] = [
 ]
 
 export default function HomePage() {
-  useSmoothScroll({
-    selector: "main > section",
-    duration: 1200,
-    delay: 800,
-    enabled: true
-  })
-
   return (
     <main>
       {sections.map(({ id, component }) => (

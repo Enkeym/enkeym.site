@@ -1,0 +1,91 @@
+:root {
+  /* Цвета */
+  --color-bg: linear-gradient(to bottom, #12071f, #2f204e);
+  --color-text: white;
+  --color-accent: #dd4c62;
+
+  /* Типографика */
+  --font-body: clamp(14px, 1.2vw, 18px);
+  --font-title: clamp(32px, 6vw, 88px);
+  --font-subtitle: clamp(25px, 4vw, 50px);
+  --font-heading: clamp(20px, 2.5vw, 32px);
+  --font-label: clamp(13px, 1vw, 15px);
+  --font-small: clamp(12px, 1vw, 16px);
+  --font-circle: clamp(14px, 2vw, 20px);
+  --font-button: clamp(14px, 1.1vw, 18px);
+
+  /* Интерфейс (кнопки, input, иконки) */
+  --btn-height: clamp(36px, 6vw, 48px);
+  --btn-padding: clamp(12px, 3vw, 24px);
+  --input-height: clamp(36px, 5vw, 48px);
+  --icon-size: clamp(18px, 3vw, 32px);
+
+  /* Отступы */
+  --spacing-xs: clamp(4px, 0.5vw, 8px);
+  --spacing-s: clamp(8px, 2vw, 16px);
+  --spacing-m: clamp(16px, 2vw, 32px);
+  --spacing-l: clamp(20px, 4vw, 40px);
+  --spacing-xl: clamp(32px, 6vw, 40px);
+  --spacing-2xl: clamp(48px, 8vw, 64px);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 100%;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: var(--font-body);
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* snap scroll */
+section {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* responsive */
+@media (width >= 640px) {
+  .container {
+    max-width: 640px;
+  }
+}
+
+@media (width >= 768px) {
+  .container {
+    max-width: 768px;
+  }
+}
+
+@media (width >= 1024px) {
+  .container {
+    max-width: 1024px;
+  }
+}
+
+@media (width >= 1280px) {
+  .container {
+    max-width: 1280px;
+  }
+}
+
+@media (width >= 1536px) {
+  .container {
+    max-width: 1536px;
+  }
+}

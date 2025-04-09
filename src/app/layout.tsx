@@ -1,8 +1,7 @@
-import { Inter } from "next/font/google"
-import "./styles/globals.css"
-import "./styles/variables.css"
 import { siteMetadata } from "@/lib/metadata"
 import { Metadata } from "next"
+import { Inter } from "next/font/google"
+import "./globals.css"
 
 const inter = Inter({ subsets: ["latin", "cyrillic"], display: "swap" })
 

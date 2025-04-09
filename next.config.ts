@@ -30,7 +30,7 @@ const isAnalyze = process.env.ANALYZE === "true"
 const baseConfig: NextConfig = {
   reactStrictMode: true,
   compress: true,
-  output: "export",
+  //output: "export",
 
   images: {
     unoptimized: true,
@@ -41,14 +41,14 @@ const baseConfig: NextConfig = {
         pathname: "/images/**"
       }
     ]
-  },
+  }
 
-  modularizeImports: {
+  /*   modularizeImports: {
     three: {
       transform: "three/src/{{member}}",
       skipDefaultConversion: true
     }
-  }
+  } */
 
   // async headers() {
   //   if (isDev) return []

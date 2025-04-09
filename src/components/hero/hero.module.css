@@ -271,12 +271,6 @@
     font-size: clamp(32px, 6vw, 72px);
   }
 
-  .bg {
-    bottom: 0;
-    height: 60%;
-    top: auto;
-  }
-
   .foamOverlay {
     height: clamp(160px, 22vh, 260px);
   }
@@ -320,14 +314,8 @@
 }
 
 @media (width <= 1280px) {
-  .bg {
-    bottom: 0;
-    height: 60%;
-    top: auto;
-  }
-
   .hImg {
-    height: 100%;
+    bottom: var(--spacing-xl);
   }
 
   .awards {
@@ -340,18 +328,14 @@
 }
 
 @media (width <= 1024px) {
-  .bg {
-    height: 50%;
+  .awards p {
+    font-size: 14px;
   }
 }
 
 @media (width <= 768px) {
   .hero {
     flex-direction: column;
-  }
-
-  .bg {
-    height: 56%;
   }
 
   .hSection {
@@ -411,7 +395,7 @@
   }
 
   .awards p {
-    font-size: var(--font-circle);
+    font-size: 16px;
     line-height: 1.5;
     margin: var(--spacing-s) auto;
     max-width: 90%;
@@ -452,53 +436,54 @@
   }
 }
 
-@media (width <= 480px) {
+@media (width <= 400px) {
   .hero {
     padding: var(--spacing-m) var(--spacing-s);
   }
 
   .hTitle {
-    font-size: clamp(22px, 6vw, 32px);
+    font-size: clamp(30px, 8vw, 50px);
     line-height: 1.3;
-    margin: 0 auto;
-    max-width: 95%;
-    text-align: center;
-  }
-
-  .awards {
-    margin: 0 auto;
-    max-width: 95%;
-    width: 100%;
+    margin-top: var(--spacing-l);
+    margin-bottom: var(--spacing-s);
   }
 
   .awards p {
-    font-size: var(--font-body);
-    line-height: 1.5;
+    font-size: 17px;
+    line-height: 1.4;
     margin: var(--spacing-s) auto;
-    text-align: center;
+    padding: 0 var(--spacing-xs);
   }
 
   .awardList {
     flex-wrap: wrap;
-    gap: var(--spacing-s);
+    gap: var(--spacing-xs);
     justify-content: center;
   }
 
-  .hImg {
-    height: clamp(180px, 60vw, 240px);
-    width: clamp(180px, 60vw, 200px);
-  }
-
   .awardListImage {
-    height: 28px;
-    width: 28px;
+    height: 26px;
+    width: 26px;
   }
 
-  .heroImage {
-    max-height: 200px;
+  .hImg {
+    height: clamp(160px, 50vw, 200px);
+    width: clamp(160px, 50vw, 200px);
+    bottom: 140px;
   }
 
-  .contactButton {
-    transform: scale(0.75);
+  .contactLink {
+    bottom: var(--spacing-m);
+    right: var(--spacing-m);
+  }
+
+  .circleText {
+    font-size: 15px;
+    letter-spacing: 2px;
+  }
+
+  .scroll {
+    bottom: var(--spacing-m);
+    left: var(--spacing-m);
   }
 }
