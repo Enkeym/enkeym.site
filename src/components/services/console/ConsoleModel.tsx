@@ -1,10 +1,10 @@
 import { useGLTF } from "@react-three/drei"
-import { ComponentProps } from "react"
+import type { ComponentProps } from "react"
 import type { BufferGeometry, Material, Mesh } from "three"
 
 type GLTFResult = {
   nodes: {
-    Cube_Material_0: Mesh & { geometry: BufferGeometry }
+    Cube_Material_0: Mesh<BufferGeometry, Material>
   }
   materials: {
     Material: Material
@@ -13,7 +13,7 @@ type GLTFResult = {
 
 type ConsoleModelProps = ComponentProps<"group">
 
-export const ConsoleModel = (props: ConsoleModelProps) => {
+const ConsoleModel = (props: ConsoleModelProps) => {
   const { nodes, materials } = useGLTF(
     "/consoleModel.glb"
   ) as unknown as GLTFResult
@@ -33,5 +33,7 @@ export const ConsoleModel = (props: ConsoleModelProps) => {
     </group>
   )
 }
+
+export default ConsoleModel
 
 useGLTF.preload("/consoleModel.glb")

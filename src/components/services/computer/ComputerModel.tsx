@@ -4,7 +4,7 @@ import type { BufferGeometry, Material, Mesh } from "three"
 
 type GLTFResult = {
   nodes: {
-    Object_4: Mesh & { geometry: BufferGeometry }
+    Object_4: Mesh<BufferGeometry, Material>
   }
   materials: {
     MacBookPro: Material
@@ -13,7 +13,7 @@ type GLTFResult = {
 
 type ComputerModelProps = ComponentProps<"group">
 
-export const ComputerModel = (props: ComputerModelProps) => {
+const ComputerModel = (props: ComputerModelProps) => {
   const { nodes, materials } = useGLTF(
     "/computerModel.glb"
   ) as unknown as GLTFResult
@@ -27,5 +27,7 @@ export const ComputerModel = (props: ComputerModelProps) => {
     </group>
   )
 }
+
+export default ComputerModel
 
 useGLTF.preload("/computerModel.glb")

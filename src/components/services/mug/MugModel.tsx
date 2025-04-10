@@ -15,7 +15,7 @@ type GLTFResult = {
   }
 }
 
-export const MugModel = (props: MugModelProps) => {
+const MugModel = (props: MugModelProps) => {
   const { nodes, materials } = useGLTF("/mugModel.glb") as unknown as GLTFResult
 
   return (
@@ -38,5 +38,7 @@ export const MugModel = (props: MugModelProps) => {
     </group>
   )
 }
+
+export default MugModel
 
 useGLTF.preload("/mugModel.glb")

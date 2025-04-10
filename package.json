@@ -7,10 +7,12 @@
     "build": "next build && yarn postbuild",
     "postbuild": "cross-env NODE_ENV=production next-sitemap",
     "start": "next start",
+    "preview": "npx serve out",
     "lint": "next lint",
     "analyze": "cross-env ANALYZE=true next build",
     "analyze:deadcode": "knip",
-    "test": "yarn analyze && yarn lint"
+    "test": "yarn analyze && yarn lint",
+    "share": "npx cloudflared tunnel --url http://localhost:3000"
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
@@ -19,7 +21,6 @@
     "@react-three/fiber": "^9.1.1",
     "framer-motion": "^12.6.3",
     "next": "15.2.4",
-    "next-secure-headers": "^2.2.0",
     "next-seo": "^6.6.0",
     "next-sitemap": "^4.2.3",
     "react": "^19.0.0",
@@ -45,6 +46,7 @@
     "eslint-config-next": "15.2.4",
     "knip": "^5.47.0",
     "postcss": "^8.5.3",
+    "serve": "^14.2.4",
     "typescript": "^5.8.3"
   }
 }

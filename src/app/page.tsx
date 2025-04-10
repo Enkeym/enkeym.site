@@ -5,6 +5,7 @@ import Head from "next/head"
 import React, { Suspense, useCallback, useRef } from "react"
 import { useInView } from "react-intersection-observer"
 
+// Ленивые секции (динамические импорты без SSR)
 const Hero = dynamic(() => import("@/components/hero/Hero"), { ssr: false })
 const Services = dynamic(() => import("@/components/services/Services"), {
   ssr: false
@@ -28,8 +29,8 @@ export default function HomePage() {
   return (
     <>
       <Head>
-        <link rel="preload" href="/man.avif" as="image" fetchPriority="high" />
-        <link rel="preload" href="/foam.avif" as="image" fetchPriority="high" />
+        <link rel="preload" href="/man.avif" as="image" />
+        <link rel="preload" href="/foam.avif" as="image" />
       </Head>
 
       <main>
@@ -78,10 +79,29 @@ function LazySection({ id, Component }: LazySectionProps) {
   )
 
   return (
-    <section ref={setRefs} id={id}>
+    <section
+      id={id}
+      ref={setRefs}
+      style={{
+        minHeight: "100vh",
+        position: "relative"
+      }}
+    >
       <Suspense fallback={<SectionFallback id={id} />}>
-        {inView && <Component />}
+        <DelayedRender inView={inView}>
+          <Component />
+        </DelayedRender>
       </Suspense>
     </section>
   )
+}
+
+function DelayedRender({
+  inView,
+  children
+}: {
+  inView: boolean
+  children: React.ReactNode
+}) {
+  return inView ? <>{children}</> : null
 }

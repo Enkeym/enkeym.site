@@ -38,38 +38,49 @@ const Contact = () => {
     e.preventDefault()
     if (!form.current) return
 
-    const now = Date.now()
+    setLoading(true)
 
+    const now = Date.now()
     const botField = (
       form.current.elements.namedItem("bot_field") as HTMLInputElement
     )?.value
-    if (botField) return
+    if (botField) {
+      setLoading(false)
+      return
+    }
 
-    if (now - startTime < 2000) return
+    if (now - startTime < 2000) {
+      setLoading(false)
+      return
+    }
+
     if (now - lastSent < 30000) {
       alert("Подождите немного перед повторной отправкой.")
+      setLoading(false)
       return
     }
 
     const message = (
       form.current.elements.namedItem("user_message") as HTMLTextAreaElement
     )?.value
+
     if (message.length > 1000) {
       alert("Сообщение слишком длинное.")
+      setLoading(false)
       return
     }
+
     if (/https?:\/\//i.test(message)) {
       alert("Ссылки запрещены в сообщении.")
+      setLoading(false)
       return
     }
 
     if (!token) {
       alert("Проверка Turnstile не пройдена.")
+      setLoading(false)
       return
     }
-
-    setLoading(true)
-    setLastSent(now)
 
     try {
       await emailjs.sendForm(
@@ -78,11 +89,11 @@ const Contact = () => {
         form.current,
         { publicKey: process.env.NEXT_PUBLIC_PUBLIC_KEY! }
       )
-
       setSuccess(true)
       setError(false)
       form.current.reset()
       setToken(null)
+      setLastSent(now)
     } catch (err) {
       console.error("Ошибка при отправке:", err)
       setError(true)

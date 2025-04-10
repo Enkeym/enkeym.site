@@ -7,9 +7,9 @@ import Image from "next/image"
 import Link from "next/link"
 import { Suspense, useEffect, useState } from "react"
 import styles from "./hero.module.css"
-import Shape from "./Shape"
 
 const Speech = dynamic(() => import("./Speech"), { ssr: false })
+const Shape = dynamic(() => import("./Shape"), { ssr: false })
 
 const awardVariants = {
   initial: { x: -100, opacity: 0 },

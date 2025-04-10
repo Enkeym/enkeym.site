@@ -49,8 +49,7 @@
   cursor: pointer;
   gap: var(--spacing-m);
   padding: var(--spacing-m) var(--spacing-l);
-  width: 100%;
-  max-width: 520px;
+  max-width: 800px;
 }
 
 .serviceIcon {
