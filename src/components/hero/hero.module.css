@@ -443,6 +443,10 @@
     padding: var(--spacing-m) var(--spacing-s);
   }
 
+  .foamImage {
+    animation: none;
+  }
+
   .hTitle {
     font-size: clamp(30px, 8vw, 50px);
     line-height: 1.3;
