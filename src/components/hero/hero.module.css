@@ -241,6 +241,8 @@
   object-fit: fill;
   object-position: top;
   width: 100%;
+  animation-delay: 2s;
+  will-change: transform;
 }
 
 @keyframes foamWave {

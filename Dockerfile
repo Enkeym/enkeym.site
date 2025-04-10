@@ -15,13 +15,15 @@ RUN apk add --no-cache brotli && rm -rf /var/cache/apk/* /tmp/*
 # Копируем статику
 COPY --from=builder /app/out /usr/share/nginx/html
 
-# Brotli-сжатие заранее
-RUN find /usr/share/nginx/html -type f \( -iname "*.js" -o -iname "*.css" -o -iname "*.html" -o -iname "*.json" -o -iname "*.svg" \) \
-  -exec brotli --force --quality=11 "{}" \; && \
-  find /usr/share/nginx/html -type f -name "*.map" -delete && \
-  find /usr/share/nginx/html -type f -name "*.DS_Store" -delete
+# Brotli-сжатие всех важных файлов (js, css, html, json, svg, шрифты, изображения)
+RUN find /usr/share/nginx/html -type f \( \
+  -iname "*.js" -o -iname "*.css" -o -iname "*.html" -o -iname "*.json" -o -iname "*.svg" \
+  -o -iname "*.woff" -o -iname "*.woff2" -o -iname "*.ttf" -o -iname "*.eot" \
+  -o -iname "*.webp" -o -iname "*.avif" -o -iname "*.png" -o -iname "*.jpg" -o -iname "*.jpeg" \
+  \) -exec brotli --force --quality=11 "{}" \; \
+  && find /usr/share/nginx/html -type f \( -iname "*.map" -o -iname "*.DS_Store" -o -iname "*.txt" -o -iname "*.md" \) -delete
 
-# Конфиг Nginx
+# Копируем кастомный конфиг Nginx
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # Healthcheck
