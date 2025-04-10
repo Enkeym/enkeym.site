@@ -1,12 +1,10 @@
 "use client"
 
+import Hero from "@/components/hero/Hero"
 import dynamic from "next/dynamic"
-import Head from "next/head"
 import React, { Suspense, useCallback, useRef } from "react"
 import { useInView } from "react-intersection-observer"
 
-// Ленивые секции (динамические импорты без SSR)
-const Hero = dynamic(() => import("@/components/hero/Hero"), { ssr: false })
 const Services = dynamic(() => import("@/components/services/Services"), {
   ssr: false
 })
@@ -19,8 +17,7 @@ type SectionItem = {
   component: React.ComponentType
 }
 
-const sections: SectionItem[] = [
-  { id: "home", component: Hero },
+const lazySections: SectionItem[] = [
   { id: "services", component: Services },
   { id: "contact", component: Contact }
 ]
@@ -28,13 +25,11 @@ const sections: SectionItem[] = [
 export default function HomePage() {
   return (
     <>
-      <Head>
-        <link rel="preload" href="/man.avif" as="image" />
-        <link rel="preload" href="/foam.avif" as="image" />
-      </Head>
-
+      <section id="home" style={{ minHeight: "100vh", position: "relative" }}>
+        <Hero />
+      </section>
       <main>
-        {sections.map(({ id, component }) => (
+        {lazySections.map(({ id, component }) => (
           <LazySection key={id} id={id} Component={component} />
         ))}
       </main>
