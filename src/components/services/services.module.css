@@ -123,6 +123,7 @@
 
   .sSection {
     width: 100%;
+    height: 100%;
   }
 
   .sSection.right {
@@ -175,7 +176,7 @@
 
 @media (width <= 360px) {
   .sTitle {
-    font-size: var(--font-heading);
+    font-size: var(--font-subtitle);
     text-align: center;
   }
 

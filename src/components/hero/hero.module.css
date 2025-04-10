@@ -432,6 +432,19 @@
     padding-top: var(--spacing-l);
   }
 
+  .awards p {
+    font-size: 18px;
+    line-height: 1.4;
+    margin: var(--spacing-s) auto;
+    padding: 0 var(--spacing-xs);
+  }
+
+  .hImg {
+    height: clamp(160px, 50vw, 200px);
+    width: clamp(160px, 50vw, 200px);
+    bottom: 90px;
+  }
+
   .awardListImage {
     height: 32px;
     width: 32px;
@@ -443,15 +456,19 @@
     padding: var(--spacing-m) var(--spacing-s);
   }
 
-  .foamImage {
-    animation: none;
+  .hTitle {
+    font-size: clamp(36px, 8vw, 60px);
+    line-height: 1.4;
+    margin-top: var(--spacing-m);
+    margin-bottom: var(--spacing-xs);
   }
 
-  .hTitle {
-    font-size: clamp(30px, 8vw, 50px);
-    line-height: 1.3;
-    margin-top: var(--spacing-l);
-    margin-bottom: var(--spacing-s);
+  .follow {
+    padding: var(--spacing-xs);
+  }
+
+  .awards h2 {
+    font-size: 26px;
   }
 
   .awards p {
@@ -475,12 +492,17 @@
   .hImg {
     height: clamp(160px, 50vw, 200px);
     width: clamp(160px, 50vw, 200px);
-    bottom: 140px;
+    bottom: 60px;
+  }
+
+  .foamOverlay {
+    height: calc(var(--spacing-xl) * 3.5);
   }
 
   .contactLink {
-    bottom: var(--spacing-m);
-    right: var(--spacing-m);
+    bottom: 0;
+    right: 0;
+    transform: scale(0.65);
   }
 
   .circleText {
@@ -489,7 +511,8 @@
   }
 
   .scroll {
-    bottom: var(--spacing-m);
-    left: var(--spacing-m);
+    bottom: var(--spacing-xxs);
+    left: var(--spacing-xxs);
+    transform: scale(0.85);
   }
 }

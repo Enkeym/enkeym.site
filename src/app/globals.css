@@ -21,6 +21,7 @@
   --icon-size: clamp(18px, 3vw, 32px);
 
   /* Отступы */
+  --spacing-xxs: clamp(0px, 0.5vw, 2px);
   --spacing-xs: clamp(4px, 0.5vw, 8px);
   --spacing-s: clamp(8px, 2vw, 16px);
   --spacing-m: clamp(16px, 2vw, 32px);
