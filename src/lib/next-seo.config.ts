@@ -60,8 +60,8 @@ export const SEO = {
     { property: "og:see_also", content: "https://t.me/enkeym" },
 
     // Мета-теги для верификации
-    { name: "google-site-verification", content: "ваш_код_верификации" },
-    { name: "yandex-verification", content: "ваш_код_верификации" }
+    { name: "google-site-verification", content: "googledcc9cced001206af" },
+    { name: "yandex-verification", content: "ae4421aecc9156f0" }
   ],
 
   additionalLinkTags: [

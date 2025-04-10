@@ -1,9 +1,15 @@
 // lib/siteMetadata.ts
+
 import type { Metadata } from "next"
 
 export const siteUrl = "https://enkeym.site"
 
-export const siteMetadata: Metadata = {
+export interface SiteMetadata extends Metadata {
+  keywords?: string[]
+  other?: Record<string, string>
+}
+
+export const siteMetadata: SiteMetadata = {
   metadataBase: new URL(siteUrl),
 
   title: "Nikita — UI/UX Designer & Developer",
@@ -12,13 +18,10 @@ export const siteMetadata: Metadata = {
     "Портфолио UI/UX-дизайнера и fullstack-разработчика Nikita Korolev. Создаю современные адаптивные веб-приложения, интерактивные интерфейсы, Telegram-ботов и 3D-сцены на базе React, Next.js и Three.js. Специализируюсь на производительности, доступности (A11Y), семантической верстке и SEO-оптимизации. Использую TypeScript, Node.js, Docker и фреймворки нового поколения. Применяю искусственный интеллект для генерации контента, анализа UX и автоматизации. Сильный акцент на анимации, визуальный дизайн и качественный код, соответствующий лучшим практикам.",
 
   keywords: [
-    // Личное и брендинг
     "Nikita",
     "Nikita Korolev",
     "Enkeym",
     "Nikita Portfolio",
-
-    // Основные направления
     "UI",
     "UX",
     "UI/UX",
@@ -31,8 +34,6 @@ export const siteMetadata: Metadata = {
     "frontend разработка",
     "fullstack разработка",
     "веб-разработка",
-
-    // Технологии и инструменты
     "React",
     "Next.js",
     "TypeScript",
@@ -55,8 +56,6 @@ export const siteMetadata: Metadata = {
     "draco",
     "3D Web",
     "Three.js Developer",
-
-    // Анимации и визуал
     "анимации",
     "плавные переходы",
     "интерактивный интерфейс",
@@ -66,8 +65,6 @@ export const siteMetadata: Metadata = {
     "Parallax",
     "Scroll animation",
     "Motion design",
-
-    // Оптимизация и best practices
     "SEO",
     "оптимизация производительности",
     "responsive design",
@@ -78,8 +75,6 @@ export const siteMetadata: Metadata = {
     "PWA",
     "перфоманс",
     "core web vitals",
-
-    // Backend и DevOps
     "REST API",
     "CI/CD",
     "GitHub Actions",
@@ -89,8 +84,6 @@ export const siteMetadata: Metadata = {
     "VPS",
     "Linux deploy",
     "Cloudflare",
-
-    // Telegram и AI
     "Telegram bots",
     "боты на Node.js",
     "Telegram API",
@@ -98,8 +91,6 @@ export const siteMetadata: Metadata = {
     "Stable Diffusion",
     "Point-E",
     "3D генерация из изображений",
-
-    // Карьера и сфера
     "портфолио разработчика",
     "портфолио дизайнера",
     "портфолио фронтенд",
@@ -122,27 +113,43 @@ export const siteMetadata: Metadata = {
     siteName: "Nikita Portfolio",
     images: [
       {
-        url: `${siteUrl}/og-image.avif`,
-        width: 1200,
-        height: 630,
-        alt: "Nikita Portfolio Preview"
-      },
-      {
-        url: `${siteUrl}/og-image.jpg`,
+        url: `${siteUrl}/og-image.jpg`, // JPEG первым — для Telegram
         width: 1200,
         height: 630,
         alt: "Nikita Portfolio Preview JPEG"
+      },
+      {
+        url: `${siteUrl}/og-image.avif`,
+        width: 1200,
+        height: 630,
+        alt: "Nikita Portfolio Preview AVIF"
       }
     ]
   },
 
   twitter: {
-    card: "summary_large_image",
+    card: "player",
     title: "Nikita — UI/UX Designer & Developer",
     description:
       "Создание веб-приложений, интерфейсов и 3D сцен. Адаптивный дизайн, UX, SEO и автоматизация на основе ИИ.",
-    creator: "@enkeym",
-    images: [`${siteUrl}/og-image.avif`]
+    creator: "@enkeym"
+  },
+
+  other: {
+    // Twitter Player Card
+    "twitter:player": "https://enkeym.site/preview-player.html",
+    "twitter:player:width": "600",
+    "twitter:player:height": "600",
+    "twitter:image":
+      "https://media.tenor.com/8iWZkA9x7t8AAAAC/cat-wizard-binoculars.gif",
+
+    // Telegram / Facebook / Discord (OpenGraph)
+    "og:title": "Nikita — UI/UX Designer & Developer",
+    "og:description":
+      "Портфолио фронтенд-разработчика и UI/UX дизайнера. Telegram-боты, 3D-интерфейсы и адаптивные приложения.",
+    "og:image": "https://enkeym.site/og-image.jpg",
+    "og:url": "https://enkeym.site",
+    "og:type": "website"
   },
 
   icons: {
