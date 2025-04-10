@@ -65,9 +65,26 @@ export const SEO = {
   ],
 
   additionalLinkTags: [
-    { rel: "icon", href: "/favicon.avif", type: "image/avif" },
-    { rel: "apple-touch-icon", href: "/og-image.avif" },
-    { rel: "manifest", href: "/manifest.json" }
+    {
+      rel: "icon",
+      href: "/favicon-32x32.png",
+      sizes: "32x32",
+      type: "image/png"
+    },
+    {
+      rel: "icon",
+      href: "/favicon-16x16.png",
+      sizes: "16x16",
+      type: "image/png"
+    },
+    {
+      rel: "apple-touch-icon",
+      href: "/apple-touch-icon.png",
+      sizes: "180x180"
+    },
+    { rel: "manifest", href: "/site.webmanifest" },
+    { rel: "mask-icon", href: "/safari-pinned-tab.svg", color: "#5bbad5" },
+    { rel: "shortcut icon", href: "/favicon.ico" }
   ],
 
   // Добавляем хлебные крошки
