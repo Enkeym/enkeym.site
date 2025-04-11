@@ -317,11 +317,15 @@
 
 @media (width <= 1280px) {
   .hImg {
-    bottom: var(--spacing-xl);
+    padding-bottom: var(--spacing-s);
   }
 
   .awards {
     width: 60%;
+  }
+
+  .awards p {
+    font-size: 14px;
   }
 
   .bubbleContainer {
@@ -329,15 +333,13 @@
   }
 }
 
-@media (width <= 1024px) {
-  .awards p {
-    font-size: 14px;
-  }
-}
-
 @media (width <= 768px) {
   .hero {
     flex-direction: column;
+  }
+
+  .hImg {
+    margin-bottom: calc(var(--spacing-l) * 2);
   }
 
   .hSection {
@@ -380,10 +382,10 @@
   }
 
   .hTitle {
-    font-size: clamp(--font-title);
-    line-height: 1.4;
-    margin: 0 auto;
-    max-width: 90%;
+    font-size: clamp(24px, 8vw, 36px);
+    line-height: 1.3;
+    text-align: center;
+    margin-bottom: var(--spacing-s);
   }
 
   .awards {
@@ -393,19 +395,30 @@
   }
 
   .awards h2 {
-    font-size: var(--font-subtitle);
+    font-size: clamp(18px, 6vw, 26px);
+    line-height: 1.4;
+    text-align: center;
+    margin-bottom: var(--spacing-s);
   }
 
   .awards p {
-    font-size: 16px;
-    line-height: 1.5;
-    margin: var(--spacing-s) auto;
-    max-width: 90%;
+    font-size: clamp(13px, 4vw, 16px);
+    line-height: 1.6;
     text-align: center;
+    max-width: 90%;
+    margin: 0 auto var(--spacing-s) auto;
+    padding: 0 var(--spacing-xs);
   }
 
   .awardList {
     justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--spacing-xs);
+  }
+
+  .awardListImage {
+    width: 30px;
+    height: 30px;
   }
 
   .scroll {
@@ -426,6 +439,12 @@
   }
 }
 
+@media (width <= 768px) {
+  .hImg {
+    bottom: var(--spacing-2xl);
+  }
+}
+
 @media (width <= 640px) {
   .hero {
     padding-bottom: var(--spacing-l);
@@ -433,16 +452,16 @@
   }
 
   .awards p {
-    font-size: 18px;
+    font-size: 16px;
     line-height: 1.4;
     margin: var(--spacing-s) auto;
     padding: 0 var(--spacing-xs);
   }
 
   .hImg {
-    height: clamp(160px, 50vw, 200px);
-    width: clamp(160px, 50vw, 200px);
-    bottom: 90px;
+    height: clamp(180px, 55vw, 220px);
+    width: clamp(180px, 55vw, 220px);
+    padding-bottom: var(--spacing-l);
   }
 
   .awardListImage {
@@ -453,35 +472,53 @@
 
 @media (width <= 400px) {
   .hero {
-    padding: var(--spacing-m) var(--spacing-s);
+    padding: var(--spacing-l) var(--spacing-s);
   }
 
   .hTitle {
-    font-size: clamp(36px, 8vw, 60px);
-    line-height: 1.4;
-    margin-top: var(--spacing-m);
-    margin-bottom: var(--spacing-xs);
+    font-size: clamp(20px, 8vw, 30px);
+    line-height: 1.3;
+    text-align: center;
+    margin-bottom: var(--spacing-s);
+    word-break: break-word;
+  }
+
+  .hTitle span {
+    display: block;
+    font-size: clamp(20px, 8.5vw, 32px);
+    line-height: 1.2;
+    margin-top: var(--spacing-xs);
   }
 
   .follow {
     padding: var(--spacing-xs);
   }
 
+  .awards {
+    max-width: 100%;
+    width: 100%;
+  }
+
   .awards h2 {
-    font-size: 26px;
+    font-size: clamp(16px, 6.5vw, 22px);
+    line-height: 1.3;
+    margin-bottom: var(--spacing-xs);
   }
 
   .awards p {
-    font-size: 17px;
-    line-height: 1.4;
-    margin: var(--spacing-s) auto;
+    font-size: clamp(14px, 4vw, 16px);
+    line-height: 1.5;
     padding: 0 var(--spacing-xs);
+    text-align: center;
+    word-break: break-word;
+    hyphens: auto;
   }
 
   .awardList {
     flex-wrap: wrap;
-    gap: var(--spacing-xs);
     justify-content: center;
+    gap: var(--spacing-xs);
+    margin-top: var(--spacing-s);
   }
 
   .awardListImage {
@@ -490,9 +527,10 @@
   }
 
   .hImg {
-    height: clamp(160px, 50vw, 200px);
-    width: clamp(160px, 50vw, 200px);
-    bottom: 60px;
+    height: clamp(160px, 60vw, 200px);
+    width: clamp(160px, 60vw, 200px);
+    bottom: calc(var(--spacing-m));
+    transform: translateY(-10px);
   }
 
   .foamOverlay {
