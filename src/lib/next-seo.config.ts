@@ -1,4 +1,3 @@
-// seo.ts
 import { homepageJsonLd, portfolioJsonLd, websiteJsonLd } from "./jsonld"
 
 const siteUrl = "https://enkeym.site"
@@ -17,6 +16,13 @@ export const SEO = {
     site_name: "Nikita Portfolio",
     images: [
       {
+        url: `${siteUrl}/og-image.jpg`,
+        width: 1200,
+        height: 630,
+        alt: "Nikita Portfolio Preview",
+        type: "image/jpeg"
+      },
+      {
         url: `${siteUrl}/og-image.avif`,
         width: 1200,
         height: 630,
@@ -29,13 +35,6 @@ export const SEO = {
         height: 630,
         alt: "Nikita Portfolio Preview",
         type: "image/webp"
-      },
-      {
-        url: `${siteUrl}/og-image.jpg`,
-        width: 1200,
-        height: 630,
-        alt: "Nikita Portfolio Preview",
-        type: "image/jpeg"
       }
     ],
     profile: {
@@ -87,6 +86,6 @@ export const SEO = {
     { rel: "shortcut icon", href: "/favicon.ico" }
   ],
 
-  // Добавляем хлебные крошки
+  // Дополнительные JSON‑LD данные
   additionalJsonLd: [portfolioJsonLd, websiteJsonLd, homepageJsonLd]
 }
