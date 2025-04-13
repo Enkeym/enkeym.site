@@ -12,7 +12,11 @@ FROM nginx:1.25-alpine
 
 RUN apk add --no-cache brotli gzip && rm -rf /var/cache/apk/* /tmp/*
 
-COPY --from=builder /app/out /usr/share/nginx/html
+# Копируем экспортированную сборку (из /out)
+COPY --from=builder /app/out /usr/share/nginx/html/
+
+# 💡 Дополнительно копируем всё из public (включая html-файлы в корне и скрытые директории)
+COPY --from=builder /app/public/. /usr/share/nginx/html/
 
 # Сжатие: GZIP + Brotli (всех важных форматов)
 RUN find /usr/share/nginx/html -type f \( \
