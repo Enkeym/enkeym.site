@@ -5,10 +5,9 @@ const siteUrl = "https://enkeym.site"
 export const SEO = {
   title: "Nikita — UI/UX Designer & Developer",
   description:
-    "Разработка современных адаптивных веб-приложений и Telegram-ботов с акцентом на производительность, дизайн и SEO.",
+    "Разработка адаптивных веб-приложений и Telegram-ботов с акцентом на производительность, UX и SEO.",
   canonical: siteUrl,
   themeColor: "#12071f",
-
   openGraph: {
     type: "website",
     locale: "ru_RU",
@@ -41,13 +40,11 @@ export const SEO = {
       username: "enkeym"
     }
   },
-
   twitter: {
     handle: "@enkeym",
     site: "@enkeym",
     cardType: "summary_large_image"
   },
-
   additionalMetaTags: [
     { name: "author", content: "Nikita (@enkeym)" },
     {
@@ -57,12 +54,9 @@ export const SEO = {
     },
     { name: "robots", content: "index, follow" },
     { property: "og:see_also", content: "https://t.me/enkeym" },
-
-    // Мета-теги для верификации
     { name: "google-site-verification", content: "googledcc9cced001206af" },
     { name: "yandex-verification", content: "ae4421aecc9156f0" }
   ],
-
   additionalLinkTags: [
     {
       rel: "icon",
@@ -82,10 +76,8 @@ export const SEO = {
       sizes: "180x180"
     },
     { rel: "manifest", href: "/site.webmanifest" },
-    { rel: "mask-icon", href: "/safari-pinned-tab.svg", color: "#5bbad5" },
+    { rel: "mask-icon", href: "/favicon.svg", color: "#5bbad5" },
     { rel: "shortcut icon", href: "/favicon.ico" }
   ],
-
-  // Дополнительные JSON‑LD данные
   additionalJsonLd: [portfolioJsonLd, websiteJsonLd, homepageJsonLd]
 }

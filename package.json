@@ -4,14 +4,18 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && yarn postbuild",
+    "build": "next build && yarn postbuild && yarn postexport",
     "postbuild": "cross-env NODE_ENV=production next-sitemap",
+    "export": "next export",
+    "postexport": "cp -r public/. out/",
     "start": "next start",
     "preview": "npx serve out",
     "lint": "next lint",
+    "check:links": "linkinator http://localhost:3000 --silent --timeout=3000 --recurse --retry=2 --fail --skip \"(mailto|tel):\"",
     "analyze": "cross-env ANALYZE=true next build",
     "analyze:deadcode": "knip",
-    "test": "yarn analyze && yarn lint",
+    "test": "yarn analyze && yarn lint && yarn validate:manifest",
+    "validate:manifest": "npx --yes webmanifest-validator ./public/site.webmanifest",
     "share": "npx cloudflared tunnel --url http://localhost:3000"
   },
   "dependencies": {
@@ -45,6 +49,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
     "knip": "^5.47.0",
+    "linkinator": "^6.1.2",
     "postcss": "^8.5.3",
     "serve": "^14.2.4",
     "typescript": "^5.8.3"

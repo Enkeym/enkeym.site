@@ -1,8 +1,10 @@
 {
   "name": "Nikita Portfolio",
   "short_name": "Nikita",
+  "lang": "ru",
   "start_url": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#12071f",
   "icons": [
@@ -15,6 +17,12 @@
       "src": "/web-app-manifest-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
   ]
 }

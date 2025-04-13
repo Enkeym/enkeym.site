@@ -1,8 +1,7 @@
-// lib/siteMetadata.ts
-
 import type { Metadata } from "next"
 
-export const siteUrl = "https://enkeym.site"
+const isProd = process.env.NODE_ENV === "production"
+export const siteUrl = isProd ? "https://enkeym.site" : ""
 
 export interface SiteMetadata extends Metadata {
   keywords?: string[]
@@ -10,7 +9,7 @@ export interface SiteMetadata extends Metadata {
 }
 
 export const siteMetadata: SiteMetadata = {
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(siteUrl || "http://localhost:3000"),
 
   title: "Nikita — UI/UX Designer & Developer",
 
@@ -107,13 +106,13 @@ export const siteMetadata: SiteMetadata = {
     type: "website",
     locale: "ru_RU",
     url: siteUrl,
+    siteName: "Nikita Portfolio",
     title: "Nikita — UI/UX Designer & Developer",
     description:
       "Портфолио UI/UX-дизайнера и fullstack-разработчика. Создание веб-приложений, Telegram-ботов и 3D-интерфейсов с акцентом на UX, доступность и SEO.",
-    siteName: "Nikita Portfolio",
     images: [
       {
-        url: `${siteUrl}/og-image.jpg`, // JPEG первым — для Telegram
+        url: `${siteUrl}/og-image.jpg`,
         width: 1200,
         height: 630,
         alt: "Nikita Portfolio Preview JPEG"
@@ -128,35 +127,39 @@ export const siteMetadata: SiteMetadata = {
   },
 
   twitter: {
-    card: "player",
+    card: "summary_large_image",
     title: "Nikita — UI/UX Designer & Developer",
     description:
       "Создание веб-приложений, интерфейсов и 3D сцен. Адаптивный дизайн, UX, SEO и автоматизация на основе ИИ.",
-    creator: "@enkeym"
+    creator: "@enkeym",
+    site: "@enkeym"
   },
 
   other: {
-    // Twitter Player Card
-    "twitter:player": "https://enkeym.site/preview-player.html",
+    // Twitter Player
+    "twitter:player": `${siteUrl}/preview-player.html`,
     "twitter:player:width": "600",
     "twitter:player:height": "600",
-    "twitter:image":
-      "https://media.tenor.com/8iWZkA9x7t8AAAAC/cat-wizard-binoculars.gif",
+    "twitter:image": `${siteUrl}/og-image.avif`,
 
-    // Telegram / Facebook / Discord (OpenGraph)
+    // OpenGraph override for Telegram / Discord
     "og:title": "Nikita — UI/UX Designer & Developer",
     "og:description":
       "Портфолио фронтенд-разработчика и UI/UX дизайнера. Telegram-боты, 3D-интерфейсы и адаптивные приложения.",
-    "og:image": "https://enkeym.site/og-image.jpg",
-    "og:url": "https://enkeym.site",
-    "og:type": "website"
+    "og:image": `${siteUrl}/og-image.jpg`,
+    "og:url": siteUrl,
+    "og:type": "website",
+
+    // Verification
+    "google-site-verification": "googledcc9cced001206af",
+    "yandex-verification": "058c94779e907eaf"
   },
 
   icons: {
     icon: [
       { url: "/favicon.ico", type: "image/x-icon" },
-      { url: "/favicon.png", type: "image/png", sizes: "32x32" },
-      { url: "/favicon.png", type: "image/png", sizes: "16x16" },
+      { url: "/favicon.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon.png", sizes: "16x16", type: "image/png" },
       { url: "/favicon.avif", type: "image/avif" },
       { url: "/favicon.svg", type: "image/svg+xml" }
     ],
@@ -190,7 +193,7 @@ export const siteMetadata: SiteMetadata = {
     yandex: "ae4421aecc9156f0"
   },
 
+  applicationName: "Nikita Portfolio",
   creator: "Nikita Korolev",
-  publisher: "Nikita, freelance",
-  applicationName: "Nikita Portfolio"
+  publisher: "Nikita, freelance"
 }
