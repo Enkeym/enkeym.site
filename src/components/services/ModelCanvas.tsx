@@ -2,10 +2,11 @@
 
 import { Html, OrbitControls, PerspectiveCamera } from "@react-three/drei"
 import { Canvas } from "@react-three/fiber"
-import { ReactNode, Suspense } from "react"
+import type { ReactNode } from "react"
+import { Suspense } from "react"
 
-type ModelCanvasProps = {
-  children: ReactNode
+export type ModelCanvasProps = {
+  children?: ReactNode
   cameraPosition?: [number, number, number]
   cameraZoom?: number
   glScale?: [number, number]
@@ -37,11 +38,14 @@ const ModelCanvas = ({
           </Html>
         }
       >
+        {/* Свет */}
         <ambientLight intensity={2} />
         <directionalLight position={[2, 2, 2]} intensity={2} />
 
+        {/* Динамическая модель */}
         {children}
 
+        {/* Управление и камера */}
         <OrbitControls
           enableZoom={false}
           autoRotate
@@ -50,9 +54,9 @@ const ModelCanvas = ({
         />
 
         <PerspectiveCamera
+          makeDefault
           position={cameraPosition}
           zoom={cameraZoom}
-          makeDefault
         />
       </Suspense>
     </Canvas>

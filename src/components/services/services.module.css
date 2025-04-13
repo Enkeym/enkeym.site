@@ -140,16 +140,17 @@
     width: 90%;
     padding: var(--spacing-m);
   }
+
+  .sSection.right canvas {
+    height: 100%;
+    max-height: 460px;
+    width: 100%;
+  }
 }
 
 @media (width <= 768px) {
   .sSection.right {
     min-height: 300px;
-  }
-
-  .sSection.right canvas {
-    height: 100%;
-    max-height: 300px;
     width: 100%;
   }
 }

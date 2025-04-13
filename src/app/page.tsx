@@ -2,7 +2,7 @@
 
 import Hero from "@/components/hero/Hero"
 import dynamic from "next/dynamic"
-import React, { Suspense, useCallback, useRef } from "react"
+import React, { Suspense, useEffect, useState } from "react"
 import { useInView } from "react-intersection-observer"
 
 const Services = dynamic(() => import("@/components/services/Services"), {
@@ -58,25 +58,15 @@ type LazySectionProps = {
 }
 
 function LazySection({ id, Component }: LazySectionProps) {
-  const ref = useRef<HTMLDivElement | null>(null)
-
-  const { ref: inViewRef, inView } = useInView({
+  const { ref, inView } = useInView({
     triggerOnce: true,
-    rootMargin: "-200px"
+    rootMargin: "0px 0px -200px 0px"
   })
-
-  const setRefs = useCallback(
-    (node: HTMLDivElement) => {
-      ref.current = node
-      inViewRef(node)
-    },
-    [inViewRef]
-  )
 
   return (
     <section
       id={id}
-      ref={setRefs}
+      ref={ref}
       style={{
         minHeight: "100vh",
         position: "relative"
@@ -98,5 +88,14 @@ function DelayedRender({
   inView: boolean
   children: React.ReactNode
 }) {
-  return inView ? <>{children}</> : null
+  const [show, setShow] = useState(false)
+
+  useEffect(() => {
+    if (inView) {
+      const timer = setTimeout(() => setShow(true), 100)
+      return () => clearTimeout(timer)
+    }
+  }, [inView])
+
+  return show ? <>{children}</> : null
 }

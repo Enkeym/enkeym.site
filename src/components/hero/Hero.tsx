@@ -1,6 +1,6 @@
 "use client"
 
-import { Canvas } from "@react-three/fiber"
+import { Canvas, useThree } from "@react-three/fiber"
 import { motion } from "framer-motion"
 import dynamic from "next/dynamic"
 import Image from "next/image"
@@ -44,6 +44,14 @@ const platforms = [
     href: "https://t.me/NikitaKorolev96"
   }
 ]
+
+const InvalidateOnShape = () => {
+  const { invalidate } = useThree()
+  useEffect(() => {
+    invalidate()
+  }, [invalidate])
+  return null
+}
 
 const Hero = () => {
   const [shapeVisible, setShapeVisible] = useState(false)
@@ -228,8 +236,15 @@ const Hero = () => {
 
       {/* Canvas, Foam и Персонаж */}
       <div className={styles.bg}>
-        <Canvas>
-          <Suspense fallback={null}>{shapeVisible && <Shape />}</Suspense>
+        <Canvas frameloop="always" gl={{ antialias: true, alpha: true }}>
+          <Suspense fallback={null}>
+            {shapeVisible && (
+              <>
+                <InvalidateOnShape />
+                <Shape />
+              </>
+            )}
+          </Suspense>
         </Canvas>
 
         <div className={styles.foamOverlay}>

@@ -82,9 +82,11 @@ const Services = () => {
         >
           {services.map((service) => (
             <motion.div
-              variants={listVariants}
-              className={styles.service}
               key={service.id}
+              variants={listVariants}
+              className={`${styles.service} ${
+                currentServiceId === service.id ? styles.active : ""
+              }`}
               onClick={() => setCurrentServiceId(service.id)}
             >
               <div
