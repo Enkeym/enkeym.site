@@ -6,6 +6,7 @@ import dynamic from "next/dynamic"
 import Image from "next/image"
 import Link from "next/link"
 import { Suspense, useEffect, useState } from "react"
+import { useInView } from "react-intersection-observer"
 import styles from "./hero.module.css"
 
 const Speech = dynamic(() => import("./Speech"), { ssr: false })
@@ -55,14 +56,29 @@ const InvalidateOnShape = () => {
 
 const Hero = () => {
   const [shapeVisible, setShapeVisible] = useState(false)
+  const [speechVisible, setSpeechVisible] = useState(false)
 
   useEffect(() => {
     if ("requestIdleCallback" in window) {
       requestIdleCallback(() => setShapeVisible(true))
+      requestIdleCallback(() => setSpeechVisible(true))
     } else {
-      setTimeout(() => setShapeVisible(true), 1500)
+      setTimeout(() => {
+        setShapeVisible(true)
+        setSpeechVisible(true)
+      }, 1500)
     }
   }, [])
+
+  const { ref: awardsRef, inView: awardsInView } = useInView({
+    triggerOnce: true
+  })
+  const { ref: followRef, inView: followInView } = useInView({
+    triggerOnce: true
+  })
+  const { ref: certificateRef, inView: certificateInView } = useInView({
+    triggerOnce: true
+  })
 
   return (
     <div className={styles.hero}>
@@ -80,9 +96,10 @@ const Hero = () => {
         </motion.h1>
 
         <motion.div
+          ref={awardsRef}
           variants={awardVariants}
           initial="initial"
-          animate="animate"
+          animate={awardsInView ? "animate" : "initial"}
           className={styles.awards}
         >
           <motion.h2 variants={awardVariants}>Fullstack разработчик</motion.h2>
@@ -143,9 +160,10 @@ const Hero = () => {
       {/* Правая секция */}
       <div className={`${styles.hSection} ${styles.right}`}>
         <motion.div
+          ref={followRef}
           variants={followVariants}
           initial="initial"
-          animate="animate"
+          animate={followInView ? "animate" : "initial"}
           className={styles.follow}
         >
           {platforms.map(({ name, href }) => (
@@ -169,12 +187,13 @@ const Hero = () => {
           </div>
         </motion.div>
 
-        <Speech />
+        {speechVisible && <Speech />}
 
         <motion.div
+          ref={certificateRef}
           variants={certificateVariants}
           initial="initial"
-          animate="animate"
+          animate={certificateInView ? "animate" : "initial"}
           className={styles.certificate}
         >
           <Image
@@ -236,7 +255,7 @@ const Hero = () => {
 
       {/* Canvas, Foam и Персонаж */}
       <div className={styles.bg}>
-        <Canvas frameloop="always" gl={{ antialias: true, alpha: true }}>
+        <Canvas dpr={[1, 1.5]} gl={{ powerPreference: "low-power" }}>
           <Suspense fallback={null}>
             {shapeVisible && (
               <>
@@ -253,8 +272,8 @@ const Hero = () => {
             alt="Пена"
             width={1200}
             height={800}
-            priority
-            fetchPriority="high"
+            loading="lazy"
+            fetchPriority="low"
             sizes="100vw"
             className={styles.foamImage}
           />
@@ -266,8 +285,8 @@ const Hero = () => {
             alt="Главный персонаж"
             width={400}
             height={600}
-            priority
-            fetchPriority="high"
+            loading="lazy"
+            fetchPriority="low"
             className={styles.heroImage}
             sizes="(max-width: 768px) 100vw, 50vw"
           />

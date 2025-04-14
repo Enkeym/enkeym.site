@@ -14,10 +14,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ru">
-      <head>
-        <link rel="preload" href="/foam.avif" as="image" fetchPriority="high" />
-        <link rel="preload" href="/man.avif" as="image" fetchPriority="high" />
-      </head>
       <body className={inter.className}>{children}</body>
     </html>
   )
