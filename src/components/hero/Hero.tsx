@@ -73,9 +73,6 @@ const Hero = () => {
   const { ref: awardsRef, inView: awardsInView } = useInView({
     triggerOnce: true
   })
-  const { ref: followRef, inView: followInView } = useInView({
-    triggerOnce: true
-  })
   const { ref: certificateRef, inView: certificateInView } = useInView({
     triggerOnce: true
   })
@@ -160,10 +157,10 @@ const Hero = () => {
       {/* Правая секция */}
       <div className={`${styles.hSection} ${styles.right}`}>
         <motion.div
-          ref={followRef}
           variants={followVariants}
           initial="initial"
-          animate={followInView ? "animate" : "initial"}
+          animate="animate"
+          transition={{ delay: 0.2 }}
           className={styles.follow}
         >
           {platforms.map(({ name, href }) => (
