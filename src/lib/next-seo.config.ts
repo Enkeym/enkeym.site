@@ -1,6 +1,5 @@
+import { siteUrl } from "@/lib/metadata"
 import { homepageJsonLd, portfolioJsonLd, websiteJsonLd } from "./jsonld"
-
-const siteUrl = "https://enkeym.site"
 
 export const SEO = {
   title: "Nikita — UI/UX Designer & Developer",

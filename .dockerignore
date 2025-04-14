@@ -1,5 +1,7 @@
+# Уже, судя по твоему примеру, но на всякий случай:
 node_modules
 .next
+out
 .dockerignore
 Dockerfile
 *.log

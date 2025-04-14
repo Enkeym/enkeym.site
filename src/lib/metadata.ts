@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 
-const isProd = process.env.NODE_ENV === "production"
-export const siteUrl = isProd ? "https://enkeym.site" : ""
+export const siteUrl = "https://enkeym.site"
 
 export interface SiteMetadata extends Metadata {
   keywords?: string[]
@@ -9,10 +8,9 @@ export interface SiteMetadata extends Metadata {
 }
 
 export const siteMetadata: SiteMetadata = {
-  metadataBase: new URL(siteUrl || "http://localhost:3000"),
+  metadataBase: new URL(siteUrl),
 
   title: "Nikita — UI/UX Designer & Developer",
-
   description:
     "Портфолио UI/UX-дизайнера и fullstack-разработчика Nikita Korolev. Разработка адаптивных веб-приложений, 3D-интерфейсов и Telegram-ботов.",
 
@@ -74,6 +72,7 @@ export const siteMetadata: SiteMetadata = {
     "google-site-verification": "googledcc9cced001206af",
     "yandex-verification": "058c94779e907eaf"
   },
+
   icons: {
     icon: [
       { url: "/favicon.ico", type: "image/x-icon" },

@@ -9,7 +9,7 @@ module.exports = {
   priority: 0.7,
   sitemapSize: 5000,
 
-  exclude: ["/404", "/_not-found", "/500", "/preview", "/internal-test"],
+  exclude: ["/500", "/preview", "/internal-test"],
 
   alternateRefs: [
     {
@@ -23,7 +23,7 @@ module.exports = {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/404", "/_not-found", "/500", "/preview", "/internal-test"]
+        disallow: ["/500", "/preview", "/internal-test"]
       }
     ],
     additionalSitemaps: ["https://enkeym.site/sitemap.xml"]

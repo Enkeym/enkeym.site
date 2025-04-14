@@ -1,4 +1,3 @@
-// jsonld.ts
 const siteUrl = "https://enkeym.site"
 
 export const portfolioJsonLd = {

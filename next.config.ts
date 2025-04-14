@@ -8,7 +8,6 @@ const baseConfig: NextConfig = {
   compress: true,
   output: "export",
   trailingSlash: true,
-
   images: {
     unoptimized: true,
     remotePatterns: [
@@ -19,7 +18,6 @@ const baseConfig: NextConfig = {
       }
     ]
   },
-
   modularizeImports: {
     three: {
       transform: "three/src/{{member}}"
