@@ -1,4 +1,3 @@
-//next.config.ts
 import withBundleAnalyzer from "@next/bundle-analyzer"
 import type { NextConfig } from "next"
 
@@ -8,6 +7,7 @@ const baseConfig: NextConfig = {
   reactStrictMode: true,
   compress: true,
   output: "export",
+  trailingSlash: true,
 
   images: {
     unoptimized: true,
