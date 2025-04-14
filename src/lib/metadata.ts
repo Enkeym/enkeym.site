@@ -68,9 +68,7 @@ export const siteMetadata: SiteMetadata = {
   other: {
     "twitter:player": `${siteUrl}/preview-player.html`,
     "twitter:player:width": "600",
-    "twitter:player:height": "600",
-    "google-site-verification": "googledcc9cced001206af",
-    "yandex-verification": "058c94779e907eaf"
+    "twitter:player:height": "600"
   },
 
   icons: {
