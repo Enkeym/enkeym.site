@@ -5,7 +5,6 @@ import { motion } from "framer-motion"
 import dynamic from "next/dynamic"
 import { useEffect, useRef, useState } from "react"
 import { useInView } from "react-intersection-observer"
-import Turnstile from "react-turnstile"
 import styles from "./contact.module.css"
 
 const listVariant = {
@@ -26,7 +25,6 @@ const Contact = () => {
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [token, setToken] = useState<string | null>(null)
   const [startTime, setStartTime] = useState<number>(Date.now())
   const [lastSent, setLastSent] = useState<number>(0)
 
@@ -76,12 +74,6 @@ const Contact = () => {
       return
     }
 
-    if (!token) {
-      alert("Проверка Turnstile не пройдена.")
-      setLoading(false)
-      return
-    }
-
     try {
       await emailjs.sendForm(
         process.env.NEXT_PUBLIC_SERVICE_ID!,
@@ -92,7 +84,6 @@ const Contact = () => {
       setSuccess(true)
       setError(false)
       form.current.reset()
-      setToken(null)
       setLastSent(now)
     } catch (err) {
       console.error("Ошибка при отправке:", err)
@@ -114,7 +105,6 @@ const Contact = () => {
           animate={inView ? "animate" : "initial"}
           className={styles.foam}
         >
-          {/* Anti-bot hidden input */}
           <input
             type="text"
             name="bot_field"
@@ -171,15 +161,6 @@ const Contact = () => {
           </motion.div>
 
           <motion.div variants={listVariant} className={styles.submitRow}>
-            <div className={styles.turnstileWrapper}>
-              <Turnstile
-                sitekey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
-                onSuccess={(token) => setToken(token)}
-                onExpire={() => setToken(null)}
-                theme="light"
-              />
-            </div>
-
             <button
               type="submit"
               className={styles.formButton}
@@ -211,7 +192,7 @@ const Contact = () => {
         </motion.form>
       </div>
 
-      <div className={`${styles.cSectionRight}`}>
+      <div className={styles.cSectionRight}>
         <ContactSvg />
       </div>
     </div>
