@@ -45,30 +45,28 @@ export const siteMetadata: SiteMetadata = {
         url: `${siteUrl}/og-image.jpg`,
         width: 1200,
         height: 630,
-        alt: "Nikita Portfolio Preview JPEG"
-      },
-      {
-        url: `${siteUrl}/og-image.avif`,
-        width: 1200,
-        height: 630,
-        alt: "Nikita Portfolio Preview AVIF"
+        alt: "Nikita Portfolio Preview"
       }
     ]
   },
 
   twitter: {
     card: "summary_large_image",
+    site: "@enkeym",
+    creator: "@enkeym",
     title: "Nikita — UI/UX Designer & Developer",
     description:
       "Создание веб-приложений, интерфейсов и 3D сцен. Адаптивный дизайн, UX, SEO и автоматизация на основе ИИ.",
-    creator: "@enkeym",
-    site: "@enkeym"
+    images: [`${siteUrl}/og-image.jpg`]
   },
 
   other: {
-    "twitter:player": `${siteUrl}/preview-player.html`,
-    "twitter:player:width": "600",
-    "twitter:player:height": "600"
+    "og:image": `${siteUrl}/og-image.jpg`,
+    "og:image:type": "image/jpeg",
+    "og:image:width": "1200",
+    "og:image:height": "630",
+    "twitter:image": `${siteUrl}/og-image.jpg`,
+    "twitter:image:alt": "Nikita Portfolio Preview"
   },
 
   icons: {
