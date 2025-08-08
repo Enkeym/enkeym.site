@@ -32,10 +32,11 @@ ssl-run:
 		--restart unless-stopped \
 		-p 80:80 \
 		-p 443:443 \
-		-v /etc/nginx/ssl/enkeym.site:/etc/nginx/ssl:ro \
+		-v /etc/letsencrypt:/etc/letsencrypt:ro \
 		--env-file .env \
 		--name $(NAME) \
 		$(NAME)
+
 
 # Перезапуск
 restart:
