@@ -32,7 +32,7 @@ ssl-run:
 		--restart unless-stopped \
 		-p 80:80 \
 		-p 443:443 \
-		-v /etc/letsencrypt:/etc/letsencrypt:ro \
+		-v /etc/letsencrypt/live/enkeym.site \
 		--env-file .env \
 		--name $(NAME) \
 		$(NAME)
