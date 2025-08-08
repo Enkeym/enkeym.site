@@ -84,3 +84,37 @@ debug:
 
 	@echo "\n📜 Последние 50 логов контейнера:"
 	sudo docker logs --tail=50 enkeym || echo "❌ Нет логов"
+
+DOMAIN ?= enkeym.site
+
+cert-show:
+	@openssl x509 -in /etc/letsencrypt/live/$(DOMAIN)/fullchain.pem -noout -dates -subject -issuer
+
+# Разово выпустить (если нужно)
+cert-issue:
+	- sudo docker stop $(NAME) || true
+	sudo certbot certonly --standalone -d $(DOMAIN) -d www.$(DOMAIN) --agree-tos -m you@example.com --non-interactive
+	- sudo docker start $(NAME) || true
+
+# Продлить сертификаты (standalone: на время стопнёт контейнер, займёт :80)
+cert-renew:
+	- sudo docker stop $(NAME) || true
+	sudo certbot renew --standalone --quiet
+	- sudo docker start $(NAME) || true
+	- sudo docker exec $(NAME) nginx -s reload || true
+
+# Мягкая перезагрузка nginx в контейнере
+reload:
+	- sudo docker exec $(NAME) nginx -t
+	- sudo docker exec $(NAME) nginx -s reload || true
+
+# Установить крон для автопродления раз в день в 03:00 (короткий даунтайм на время renew)
+cron-install:
+	@sudo bash -c 'cat > /etc/cron.d/certbot-docker <<CRON
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+0 3 * * * root docker stop $(NAME) >/dev/null 2>&1; certbot renew --standalone --quiet; docker start $(NAME) >/dev/null 2>&1; docker exec $(NAME) nginx -s reload >/dev/null 2>&1 || true
+CRON'
+	@sudo chmod 644 /etc/cron.d/certbot-docker
+	@sudo systemctl restart cron || sudo service cron restart
+	@echo "Крон установлен."
