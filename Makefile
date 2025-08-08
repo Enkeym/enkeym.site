@@ -1,85 +1,153 @@
-# Название контейнера и образа
-NAME=enkeym
-PORT=8080
+# ========= ПАРАМЕТРЫ =========
+NAME        := enkeym
+IMAGE       := enkeym           # имя итогового образа nginx (ты его собираешь ниже)
+PORT        := 8080             # внешний порт для http (режим без SSL)
+DOMAIN      := enkeym.site
+DOMAIN_WWW  := www.enkeym.site
+LE_DIR      := /etc/letsencrypt
+LE_LIVE_DIR := $(LE_DIR)/live/$(DOMAIN)
+CERTBOT_IMG := certbot/certbot
+CERTBOT_EMAIL := you@example.com   # <<<<< ПОМЕНЯЙ
 
-# Удалить контейнер и образ
+# ========= УТИЛИТЫ =========
+DOCKER := sudo docker
+
+# ========= ХЕЛПЕРЫ =========
+.PHONY: help
+help:
+	@echo "make build         - собрать образ"
+	@echo "make run           - запустить HTTP (без SSL) на $(PORT)"
+	@echo "make ssl-run       - запустить HTTPS c монтированием LE"
+	@echo "make stop/start/restart/rm/logs/ps/debug - управление"
+	@echo "make cert-issue    - ВЫПУСТИТЬ новые сертификаты (standalone, порт 80)"
+	@echo "make cert-renew    - ПРОДЛИТЬ сертификаты (standalone, порт 80)"
+	@echo "make cert-show     - показать даты и предмет сертификата"
+	@echo "make cron-install  - прописать автопродление в cron"
+	@echo "make clean         - удалить контейнер/образ и .next"
+
+# ========= СБОРКА =========
+.PHONY: clean
 clean:
-	sudo docker stop $(NAME) || true
-	sudo docker rm $(NAME) || true
-	sudo docker rmi $(NAME) || true
+	-$(DOCKER) stop $(NAME) || true
+	-$(DOCKER) rm $(NAME) || true
+	-$(DOCKER) rmi $(IMAGE) || true
 	sudo rm -rf .next
 
-# Собрать образ
+.PHONY: build
 build:
 	sudo docker system prune -af --volumes
+	# если у тебя два Dockerfile, оставь один нужный; ниже два билда как было
 	sudo docker build -t enkeym-app .
-	sudo docker build -t $(NAME) .
+	sudo docker build -t $(IMAGE) .
 
-# Запустить контейнер без SSL (порт 80 → 3000)
+# ========= ЗАПУСК =========
+.PHONY: run
 run:
-	sudo docker run -d \
+	$(DOCKER) run -d \
 		--restart unless-stopped \
 		-p $(PORT):80 \
 		--env-file .env \
 		--name $(NAME) \
-		$(NAME)
+		$(IMAGE)
 
-# 🔐 Запустить контейнер с монтированием SSL
+.PHONY: ssl-run
 ssl-run:
-	-sudo docker stop $(NAME) || true
-	-sudo docker rm $(NAME) || true
-	sudo docker run -d \
+	-$(DOCKER) stop $(NAME) || true
+	-$(DOCKER) rm $(NAME) || true
+	# ВАЖНО: монтируем live-директорию LE (внутри — symlink-ы на archive)
+	$(DOCKER) run -d \
 		--restart unless-stopped \
 		-p 80:80 \
 		-p 443:443 \
-		-v /etc/nginx/ssl/enkeym.site:/etc/nginx/ssl:ro \
+		-v $(LE_LIVE_DIR):/etc/nginx/ssl:ro \
 		--env-file .env \
 		--name $(NAME) \
-		$(NAME)
+		$(IMAGE)
 
-# Перезапуск
+.PHONY: restart
 restart:
-	sudo docker restart $(NAME)
+	$(DOCKER) restart $(NAME)
 
-# Остановить контейнер
+.PHONY: stop
 stop:
-	sudo docker stop $(NAME)
+	$(DOCKER) stop $(NAME)
 
-# Старт контейнера
+.PHONY: start
 start:
-	sudo docker start $(NAME)
+	$(DOCKER) start $(NAME)
 
-# Удалить контейнер
+.PHONY: rm
 rm:
-	sudo docker rm $(NAME)
+	$(DOCKER) rm $(NAME)
 
-# Просмотр логов
+.PHONY: logs
 logs:
-	sudo docker logs -f $(NAME)
+	$(DOCKER) logs -f $(NAME)
 
-# Показать все контейнеры
+.PHONY: ps
 ps:
-	sudo docker ps -a
+	$(DOCKER) ps -a
 
-# 🛠️ Отладка контейнера enkeym
+# ========= SSL / CERTBOT =========
+# Перед выдачей/продлением: контейнер с nginx должен быть остановлен, порт 80 свободен.
+.PHONY: cert-issue
+cert-issue:
+	-$(DOCKER) stop $(NAME) || true
+	$(DOCKER) run --rm -it -p 80:80 \
+	  -v $(LE_DIR):/etc/letsencrypt \
+	  $(CERTBOT_IMG) certonly --standalone \
+	  -d $(DOMAIN) -d $(DOMAIN_WWW) \
+	  --agree-tos -m $(CERTBOT_EMAIL) --non-interactive
+	@echo "OK. Теперь запусти: make ssl-run"
+
+.PHONY: cert-renew
+cert-renew:
+	-$(DOCKER) stop $(NAME) || true
+	$(DOCKER) run --rm -it -p 80:80 \
+	  -v $(LE_DIR):/etc/letsencrypt \
+	  $(CERTBOT_IMG) renew --standalone
+	@echo "Renew завершён. Перезапускаю nginx (если есть)…"
+	-$(DOCKER) start $(NAME) || true
+	-$(DOCKER) exec $(NAME) nginx -s reload || true
+
+.PHONY: cert-show
+cert-show:
+	@if [ -f "$(LE_LIVE_DIR)/fullchain.pem" ]; then \
+	  openssl x509 -in $(LE_LIVE_DIR)/fullchain.pem -noout -dates -issuer -subject ; \
+	else \
+	  echo "Сертификат не найден: $(LE_LIVE_DIR)/fullchain.pem"; \
+	fi
+
+.PHONY: cron-install
+cron-install:
+	@echo "Создаю /etc/cron.d/certbot-docker…"
+	@sudo bash -c 'cat > /etc/cron.d/certbot-docker <<CRON
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+# Каждый день в 03:00 пытаемся renew, потом мягкий reload nginx
+0 3 * * * root $(DOCKER) run --rm -p 80:80 -v $(LE_DIR):/etc/letsencrypt $(CERTBOT_IMG) renew --standalone && $(DOCKER) exec $(NAME) nginx -s reload
+CRON'
+	@sudo chmod 644 /etc/cron.d/certbot-docker
+	@sudo systemctl restart cron || sudo service cron restart
+	@echo "Готово."
+
+# ========= ОТЛАДКА =========
+.PHONY: debug
 debug:
-	@echo "\n🔍 Проверка состояния контейнера..."
-	sudo docker ps -a | grep enkeym || echo "❌ Контейнер не найден"
+	@echo "\n🔍 Контейнер:"
+	$(DOCKER) ps -a | grep $(NAME) || echo "❌ Контейнер не найден"
 
-	@echo "\n🔍 Проверка, что nginx слушает порты:"
-	sudo docker exec -it enkeym netstat -tulpn | grep -E ':80|:443' || echo "❌ nginx не слушает 80/443"
+	@echo "\n🔍 Порты внутри контейнера:"
+	-$(DOCKER) exec -it $(NAME) sh -c 'command -v netstat >/dev/null && netstat -tulpn | grep -E ":80|:443" || ss -tulpn | grep -E ":80|:443"' || echo "❌ Нет netstat/ss или контейнер не запущен"
 
-	@echo "\n📂 Список файлов в /usr/share/nginx/html:"
-	sudo docker exec -it enkeym ls -lah /usr/share/nginx/html | head -n 20
+	@echo "\n📂 /usr/share/nginx/html:"
+	-$(DOCKER) exec -it $(NAME) ls -lah /usr/share/nginx/html | head -n 20
 
-	@echo "\n📄 Проверка наличия сертификатов:"
-	sudo docker exec -it enkeym ls -lah /etc/nginx/ssl || echo "❌ Сертификаты не найдены"
+	@echo "\n📄 Сертификаты внутри контейнера:"
+	-$(DOCKER) exec -it $(NAME) ls -lah /etc/nginx/ssl || echo "❌ Сертификаты не смонтированы"
 
-	@echo "\n⚙️  Активные процессы в контейнере:"
-	sudo docker exec -it enkeym ps aux | grep nginx
+	@echo "\n🧪 TLS cнаружи (s_client):"
+	-echo | openssl s_client -connect $(DOMAIN):443 -servername $(DOMAIN) 2>/dev/null | openssl x509 -noout -dates -subject -issuer || echo "❌ s_client не сработал"
 
-	@echo "\n🧪 curl localhost изнутри контейнера:"
-	sudo docker exec -it enkeym curl -vk https://localhost --resolve enkeym.site:443:127.0.0.1 --insecure || echo "❌ nginx не отвечает"
-
-	@echo "\n📜 Последние 50 логов контейнера:"
-	sudo docker logs --tail=50 enkeym || echo "❌ Нет логов"
+	@echo "\n📜 Последние 50 логов:"
+	-$(DOCKER) logs --tail=50 $(NAME) || echo "❌ Нет логов"
